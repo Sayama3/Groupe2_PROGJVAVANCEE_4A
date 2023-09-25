@@ -29,19 +29,18 @@ public class GameRenderer : MonoBehaviour
 	private void InitBoard()
 	{
         //TODO: Destroy Existing.
-		var board = game.GetGameBoard();
-		currentGameBoard = new GameBoard(board);
-		var w = board.Width;
-		var h = board.Height;
+		currentGameBoard = game.GetCopyGameBoard();
+		var w = currentGameBoard.Width;
+		var h = currentGameBoard.Height;
 		boardParent.position = new Vector3(-((float)w)*0.5f, height, -((float)h)*0.5f);
-		renderBoard = new GameObject[board.Count];
+		renderBoard = new GameObject[currentGameBoard.Count];
 		for (int x = 0; x < w; x++)
 		{
 			for (int y = 0; y < h; y++)
 			{
 				
 				Vector3 position = new Vector3(x, 0, y);
-				var cell = board.GetCell(x, y);
+				var cell = currentGameBoard.GetCell(x, y);
 				var srcObj = GetAssociatedGameObject(cell);
 				var instance = Instantiate(srcObj, boardParent, false);
 				renderBoard[x + y * w] = instance;
