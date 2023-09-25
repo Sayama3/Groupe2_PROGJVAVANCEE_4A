@@ -54,8 +54,8 @@ public class Game
 
 	public bool PositionHasExploded(float positionX, float positionZ)
 	{
-		int x = (int)positionX;
-		int z = (int)positionZ;
+		int x = Round(positionX);
+		int z = Round(positionZ);
 		return PositionHasExploded(x, z);
 	}
 

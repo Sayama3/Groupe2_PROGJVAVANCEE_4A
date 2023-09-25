@@ -7,7 +7,7 @@ public class HumanPlayerController : APlayerController
         this.PrefabSource = prefab;
     }
     
-    public override PlayerUpdateResult Update(float dt, Game currentGame)
+    public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
@@ -18,7 +18,7 @@ public class HumanPlayerController : APlayerController
         
         if (!hasDroppedBomb)
         {
-            bool[] possibleActions = currentGame.GetPossibleActions(Position);
+            bool[] possibleActions = copyGame.GetPossibleActions(Position);
             if (verticalInput > 0 && possibleActions[1])
             {
                 Position.y += speed * dt;
