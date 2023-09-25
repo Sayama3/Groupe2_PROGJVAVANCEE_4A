@@ -146,10 +146,6 @@ public class Game
 		int x = Round(position.x);
 		int y = Round(position.y);
 		Vector2Int Center = new Vector2Int(x, y);
-		Vector2Int Up = new Vector2Int(x,Round(position.y + 0.5f)); //.5f is player radius
-		Vector2Int Right = new Vector2Int(Round(position.x + 0.5f),y);
-		Vector2Int Down = new Vector2Int(x,Round(position.y - 0.5f));
-		Vector2Int Left = new Vector2Int(Round(position.x - 0.5f),y);
 
 		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove[0] = true; // Foireux
 		
@@ -159,32 +155,69 @@ public class Game
 
 		if (centeredOnX && centeredOnY) // On 1 square, check everything
 		{
-			if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
+			Vector2Int Up = new Vector2Int(x,Round(position.y + 0.5f)); //.5f is player capsule radius
+			Vector2Int Right = new Vector2Int(Round(position.x + 0.5f),y);
+			Vector2Int Down = new Vector2Int(x,Round(position.y - 0.5f));
+			Vector2Int Left = new Vector2Int(Round(position.x - 0.5f),y);
+			
+			if(PosIsInBoard(Up))
 			{
 				if(_gameBoard.GetCell(Up) == CellStates.None) possibleMove[1] = true;
 			}
-			if(Right.x >= 0 && Right.x < _gameBoard.Width && Right.y >= 0 && Right.y < _gameBoard.Height)
+			if(PosIsInBoard(Right))
 			{
 				if(_gameBoard.GetCell(Right) == CellStates.None) possibleMove[2] = true;
 			}
-			if(Down.x >= 0 && Down.x < _gameBoard.Width && Down.y >= 0 && Down.y < _gameBoard.Height)
+			if(PosIsInBoard(Down))
 			{
 				if (_gameBoard.GetCell(Down) == CellStates.None) possibleMove[3] = true;
 			}
-			if(Left.x >= 0 && Left.x < _gameBoard.Width && Left.y >= 0 && Left.y < _gameBoard.Height)
+			if(PosIsInBoard(Left))
 			{
 				if(_gameBoard.GetCell(Left) == CellStates.None) possibleMove[4] = true;
 			}
 		}
-		else if (centeredOnX) // On 2 squares (vertical) => Check horizontal
+		else if (centeredOnX) // On 2 squares (vertical) => Check 4 horizontal cells (both left & right)
 		{
 			possibleMove[1] = true;
 			possibleMove[3] = true;
+
+			int yFloor = Mathf.FloorToInt(position.y);
+			
+			Vector2Int topLeft = new Vector2Int(x-1,yFloor + 1);
+			Vector2Int topRight = new Vector2Int(x+1,yFloor + 1);
+			Vector2Int bottomLeft = new Vector2Int(x-1,yFloor);
+			Vector2Int bottomRight = new Vector2Int(x+1,yFloor);
+
+			if(PosIsInBoard(topRight) && PosIsInBoard(bottomRight))
+			{
+				if (_gameBoard.GetCell(topRight) == CellStates.None && _gameBoard.GetCell(bottomRight) == CellStates.None) possibleMove[2] = true;
+			}
+			if(PosIsInBoard(topLeft) && PosIsInBoard(bottomLeft))
+			{
+				if(_gameBoard.GetCell(topLeft) == CellStates.None && _gameBoard.GetCell(bottomLeft) == CellStates.None) possibleMove[4] = true;
+			}
 		}
-		else if (centeredOnY) // On 2 squares (horizontal) => Check vertical
+		else if (centeredOnY) // On 2 squares (horizontal) => Check 4 vertical cells (both up & down)
 		{
 			possibleMove[2] = true;
 			possibleMove[4] = true;
+			
+			int xFloor = Mathf.FloorToInt(position.x);
+			
+			Vector2Int topLeft = new Vector2Int(xFloor - 1,y + 1);
+			Vector2Int topRight = new Vector2Int(xFloor + 1,y + 1);
+			Vector2Int bottomLeft = new Vector2Int(xFloor - 1,y);
+			Vector2Int bottomRight = new Vector2Int(xFloor + 1,y);
+
+			if(PosIsInBoard(topLeft) && PosIsInBoard(topRight))
+			{
+				if(_gameBoard.GetCell(topLeft) == CellStates.None && _gameBoard.GetCell(topRight) == CellStates.None) possibleMove[1] = true;
+			}
+			if(PosIsInBoard(bottomLeft) && PosIsInBoard(bottomRight))
+			{
+				if (_gameBoard.GetCell(bottomLeft) == CellStates.None && _gameBoard.GetCell(bottomRight) == CellStates.None) possibleMove[3] = true;
+			}
 		}
 		else // On 4 squares => Free movement
 		{
@@ -197,6 +230,11 @@ public class Game
 		Assert.IsTrue(possibleMove.Length > 0);
 
 		return possibleMove;
+
+		bool PosIsInBoard(Vector2Int pos)
+		{
+			return pos.x >= 0 && pos.x < _gameBoard.Width && pos.y >= 0 && pos.y < _gameBoard.Height;
+		}
 	}
 
 	public bool IsPositionValidToMove(int x, int y)
