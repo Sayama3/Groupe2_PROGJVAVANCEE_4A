@@ -10,27 +10,59 @@ public class RandomPlayerController : APlayerController
         this.PrefabSource = prefab;
     }
 
+    // public override PlayerUpdateResult Update(float dt, Game copyGame)
+    // {
+    //     GameActions action = GameActions.None;
+    //     if (!target.HasValue)
+    //     {
+    //         action = Helpers.GetRandomEnum<GameActions>();
+    //         switch (action)
+    //         {
+    //             case GameActions.None:
+    //             {
+    //                 return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
+    //             }
+    //             case GameActions.Move:
+    //             {
+    //                 Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
+    //                 target = direction;
+    //             }
+    //                 break;
+    //             case GameActions.Bomb:
+    //                 return new PlayerUpdateResult{Position = Position, HasDropBomb = true};
+    //         }
+    //     }
+    //
+    //     if (target.HasValue)
+    //     {
+    //         Position = Vector2.MoveTowards(Position, target.Value, GameManager.Instance.GetCurrentGameParams().Speed * dt);
+    //         if (target == Position)
+    //         {
+    //             target = null;
+    //         }
+    //     }
+    //
+    //     return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
+    // }
+
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
-        GameActions action = GameActions.None;
-        if (!target.HasValue)
+        target = null;
+        var action = Helpers.GetRandomEnum<GameActions>();
+        switch (action)
         {
-            action = Helpers.GetRandomEnum<GameActions>();
-            switch (action)
+            case GameActions.None:
             {
-                case GameActions.None:
-                {
-                    return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
-                }
-                case GameActions.Move:
-                {
-                    Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
-                    target = direction;
-                }
-                    break;
-                case GameActions.Bomb:
-                    return new PlayerUpdateResult{Position = Position, HasDropBomb = true};
+                return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
             }
+            case GameActions.Move:
+            {
+                Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
+                target = direction;
+            }
+                break;
+            case GameActions.Bomb:
+                return new PlayerUpdateResult{Position = Position, HasDropBomb = true};
         }
 
         if (target.HasValue)
