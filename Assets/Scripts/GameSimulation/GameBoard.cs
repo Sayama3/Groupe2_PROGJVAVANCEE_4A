@@ -23,9 +23,21 @@ public class GameBoard : IReadOnlyList<CellStates>
 	public GameBoard(GameBoard board)
 	{
 		this.gameParameters = board.gameParameters;
-		this.gameboard = board.gameboard;
-        this.bombTimers = board.bombTimers;
-		this.bombs = board.bombs;
+		this.gameboard = new CellStates[board.gameboard.Length];
+		for (int i = 0; i < board.gameboard.Length; i++)
+		{
+			this.gameboard[i] = board.gameboard[i];
+		}
+		this.bombTimers = new float?[board.bombTimers.Length];
+		for (int i = 0; i < board.bombTimers.Length; i++)
+		{
+			this.bombTimers[i] = board.bombTimers[i];
+		}
+		this.bombs = new List<int>(board.bombs.Count);
+		for (int i = 0; i < board.bombs.Count; i++)
+		{
+			this.bombs.Add(board.bombs[i]);
+		}
 	}
 
 	public GameBoard(IGameParameters parameters)
