@@ -75,23 +75,23 @@ public class Game
 		Vector2Int Down = Center + Vector2Int.down;
 		Vector2Int Left = Center + Vector2Int.left;
 
-		if(_gameBoard.GetCell(Center) == CellStates.None || _gameBoard.GetCell(Center) == CellStates.Bomb) possibleMove.Add(Center);
+		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove.Add(Center);
 
 		if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Up) == CellStates.None || _gameBoard.GetCell(Up) == CellStates.Bomb) possibleMove.Add(Up);
+            if(_gameBoard.GetCell(Up) == CellStates.None) possibleMove.Add(Up);
 		}
 		if(Right.x >= 0 && Right.x < _gameBoard.Width && Right.y >= 0 && Right.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Right) == CellStates.None || _gameBoard.GetCell(Right) == CellStates.Bomb) possibleMove.Add(Right);
+            if(_gameBoard.GetCell(Right) == CellStates.None) possibleMove.Add(Right);
 		}
 		if(Down.x >= 0 && Down.x < _gameBoard.Width && Down.y >= 0 && Down.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Down) == CellStates.None || _gameBoard.GetCell(Down) == CellStates.Bomb) possibleMove.Add(Down);
+            if(_gameBoard.GetCell(Down) == CellStates.None) possibleMove.Add(Down);
 		}
 		if(Left.x >= 0 && Left.x < _gameBoard.Width && Left.y >= 0 && Left.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Left) == CellStates.None || _gameBoard.GetCell(Left) == CellStates.Bomb) possibleMove.Add(Left);
+            if(_gameBoard.GetCell(Left) == CellStates.None) possibleMove.Add(Left);
 		}
 
 		Assert.IsTrue(possibleMove.Count > 0);
@@ -103,7 +103,7 @@ public class Game
 	{
 		if(x >= 0 && x < _gameBoard.Width && y >= 0 && y < _gameBoard.Height)
 		{
-			return (_gameBoard.GetCell(x, y) == CellStates.None || _gameBoard.GetCell(x, y) == CellStates.Bomb);
+			return (_gameBoard.GetCell(x, y) == CellStates.None);
 		}
 
 		return false;
