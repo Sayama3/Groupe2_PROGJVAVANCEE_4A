@@ -98,4 +98,14 @@ public class Game
 
 		return possibleMove.ToArray();
 	}
+
+	public bool IsPositionValidToMove(int x, int y)
+	{
+		if(x >= 0 && x < _gameBoard.Width && y >= 0 && y < _gameBoard.Height)
+		{
+			return (_gameBoard.GetCell(x, y) == CellStates.None || _gameBoard.GetCell(x, y) == CellStates.Bomb);
+		}
+
+		return false;
+	}
 }
