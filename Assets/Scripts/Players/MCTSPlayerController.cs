@@ -55,28 +55,27 @@ public class MCTSPlayerController : APlayerController
     
     private GameActions FindPossibleAction(Game game)
     {
-        List<GameActions> allPossibleActions = new List<GameActions>(); // Might be useless to make a list
+        List<GameActions> allPossibleActions = new List<GameActions>();
         GameBoard currentBoard = game.GetCopyGameBoard();
         
         allPossibleActions.Add(GameActions.None);
-        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z) == CellStates.None)
+        if (currentBoard.GetCell((int)Position.x, (int)Position.z) == CellStates.None)
         {
             allPossibleActions.Add(GameActions.Bomb);
         }
-
-        if (game.GetCopyGameBoard().GetCell((int)Position.x - 1, (int)Position.z) == CellStates.None)
+        if (currentBoard.GetCell((int)Position.x - 1, (int)Position.z) == CellStates.None)
         {
             allPossibleActions.Add(GameActions.MoveLeft);
         }
-        if (game.GetCopyGameBoard().GetCell((int)Position.x + 1, (int)Position.z) == CellStates.None)
+        if (currentBoard.GetCell((int)Position.x + 1, (int)Position.z) == CellStates.None)
         {
             allPossibleActions.Add(GameActions.MoveRight);
         }
-        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z - 1) == CellStates.None)
+        if (currentBoard.GetCell((int)Position.x, (int)Position.z - 1) == CellStates.None)
         {
             allPossibleActions.Add(GameActions.MoveDown);
         }
-        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z + 1) == CellStates.None)
+        if (currentBoard.GetCell((int)Position.x, (int)Position.z + 1) == CellStates.None)
         {
             allPossibleActions.Add(GameActions.MoveUp);
         }
