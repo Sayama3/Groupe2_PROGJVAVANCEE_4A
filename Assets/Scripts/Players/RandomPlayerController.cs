@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class RandomPlayerController : APlayerController
 {
+    public RandomPlayerController(GameObject prefab)
+    {
+        this.PrefabSource = prefab;
+    }
+    
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
         int randomAction = Random.Range(0, 5);
 
         PlayerUpdateResult res = new PlayerUpdateResult();
-        res.Position = Position;
         float speed = GameManager.Instance.GetCurrentGameParams().Speed;
+        var Position = this.Position;
+        bool hasDroppedBomb = false;
         
         switch (randomAction)
         {
@@ -16,19 +22,20 @@ public class RandomPlayerController : APlayerController
                 res.HasDropBomb = true;
                 break;
             case 1:
-                res.Position.x -= speed * dt;
+                Position.x -= speed * dt;
                 break;
             case 2:
-                res.Position.x += speed * dt;
+                Position.x += speed * dt;
                 break;
             case 3:
-                res.Position.z -= speed * dt;
+                Position.y -= speed * dt;
                 break;
             case 4:
-                res.Position.z += speed * dt;
+                Position.y += speed * dt;
                 break;
         }
         
-        return res;
+        this.Position = Position;
+        return new PlayerUpdateResult {HasDropBomb = hasDroppedBomb, Position = Position};
     }
 }

@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class HumanPlayerController : APlayerController
 {
+    public HumanPlayerController(GameObject prefab)
+    {
+        this.PrefabSource = prefab;
+    }
+    
     public override PlayerUpdateResult Update(float dt, Game currentGame)
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         float speed = GameManager.Instance.GetCurrentGameParams().Speed;
         var Position = this.Position;
+        
+        // todo limites de map
         
         bool hasDroppedBomb = Input.GetKeyDown(KeyCode.Space);
         if (!hasDroppedBomb)

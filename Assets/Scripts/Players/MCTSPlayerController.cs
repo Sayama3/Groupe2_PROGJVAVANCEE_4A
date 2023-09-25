@@ -8,6 +8,11 @@ public class MCTSPlayerController : APlayerController
     private const int numberOfTests = 4;
     private const int numberOfSimulations = 8;
 
+    public MCTSPlayerController(GameObject prefab)
+    {
+        this.PrefabSource = prefab;
+    }
+    
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
         PlayerUpdateResult res = new PlayerUpdateResult();
