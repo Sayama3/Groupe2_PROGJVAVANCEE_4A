@@ -1,6 +1,9 @@
 ﻿public enum GameActions
 {
 	None = 0,
-	Move,
+	MoveUp,
+	MoveDown,
+	MoveLeft,
+	MoveRight,
 	Bomb,
 }

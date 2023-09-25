@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public class MCTSPlayerController : APlayerController
 {
     private const int numberOfTests = 4;
     private const int numberOfSimulations = 8;
-    private MCTSNode startNode;
 
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
@@ -11,53 +13,74 @@ public class MCTSPlayerController : APlayerController
         
         for (int i = 0; i < numberOfTests; i++)
         {
-            MCTSNode selectedNode = Selection();
-            MCTSNode newNode = Expand(selectedNode);
-            int simulationScore = Simulate(newNode);
-            BackPropagation(newNode,simulationScore,numberOfSimulations);
-            Play();
+            Game newGame = Expand(copyGame);
+            int simulationScore = Simulate(newGame);
+            BackPropagation(newGame,simulationScore,numberOfSimulations);
         }
 
+        
+        
         return res;
     }
 
-    MCTSNode Selection()
+    private Game Expand(Game game)
     {
-        MCTSNode selectedNode;
+        // Choose possible move
+        GameActions action = FindPossibleAction(game);
+        // Other player does random thing
+        // Continuer jusqu'à victoire/défaire
 
-        return selectedNode;
+        
+        
+        return game;
     }
 
-    MCTSNode Expand(MCTSNode node)
-    {
-        return node;
-    }
-
-    int Simulate(MCTSNode node)
+    private int Simulate(Game game)
     {
         int numberWin = 0;
         
         for (int i = 0; i < numberOfSimulations; i++)
         {
-
+            // if win
             numberWin++;
         }
         
         return numberWin;
     }
 
-    void BackPropagation(MCTSNode newNode, int numberVictory, int numberSimulation)
+    private void BackPropagation(Game newGame, int numberVictory, int numberSimulation)
     {
         // ???
     }
-
-    void Play()
-    {
-        
-    }
-}
-
-public struct MCTSNode
-{
     
+    private GameActions FindPossibleAction(Game game)
+    {
+        List<GameActions> allPossibleActions = new List<GameActions>(); // Might be useless to make a list
+        GameBoard currentBoard = game.GetCopyGameBoard();
+        
+        allPossibleActions.Add(GameActions.None);
+        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z) == CellStates.None)
+        {
+            allPossibleActions.Add(GameActions.Bomb);
+        }
+
+        if (game.GetCopyGameBoard().GetCell((int)Position.x - 1, (int)Position.z) == CellStates.None)
+        {
+            allPossibleActions.Add(GameActions.MoveLeft);
+        }
+        if (game.GetCopyGameBoard().GetCell((int)Position.x + 1, (int)Position.z) == CellStates.None)
+        {
+            allPossibleActions.Add(GameActions.MoveRight);
+        }
+        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z - 1) == CellStates.None)
+        {
+            allPossibleActions.Add(GameActions.MoveDown);
+        }
+        if (game.GetCopyGameBoard().GetCell((int)Position.x, (int)Position.z + 1) == CellStates.None)
+        {
+            allPossibleActions.Add(GameActions.MoveUp);
+        }
+
+        return allPossibleActions[Random.Range(0, allPossibleActions.Count)];
+    }
 }
