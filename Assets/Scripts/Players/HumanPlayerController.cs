@@ -14,26 +14,26 @@ public class HumanPlayerController : APlayerController
         float speed = GameManager.Instance.GetCurrentGameParams().Speed;
         var Position = this.Position;
         
-        // todo limites de map
-        
         bool hasDroppedBomb = Input.GetKeyDown(KeyCode.Space);
+        
         if (!hasDroppedBomb)
         {
-            if (horizontalInput < 0f)
+            bool[] possibleActions = currentGame.GetPossibleActions(Position);
+            if (verticalInput > 0 && possibleActions[1])
             {
-                Position.x -= speed * dt;
+                Position.y += speed * dt;
             }
-            else if (horizontalInput > 0f)
+            else if (horizontalInput > 0 && possibleActions[2])
             {
                 Position.x += speed * dt;
             }
-            else if (verticalInput < 0f)
+            else if (verticalInput < 0 && possibleActions[3])
             {
                 Position.y -= speed * dt;
             }
-            else if (verticalInput > 0f)
+            else if (horizontalInput < 0 && possibleActions[4])
             {
-                Position.y += speed * dt;
+                Position.x -= speed * dt;
             }
         }
 

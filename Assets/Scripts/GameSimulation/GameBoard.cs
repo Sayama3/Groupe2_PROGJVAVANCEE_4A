@@ -131,7 +131,7 @@ public class GameBoard : IReadOnlyList<CellStates>
 		for (int i = 0; i < bombs.Count; i++)
 		{
 			Vector2Int bombPosition = GetPosition(bombs[i]);
-			Assert.IsTrue(bombTimers[bombs[i]].HasValue, "The timer si supposed to exist.");
+			Assert.IsTrue(bombTimers[bombs[i]].HasValue, "The timer is supposed to exist.");
 			if(bombTimers[bombs[i]] > 0) continue;
 			if (bombPosition.x != x && bombPosition.y != y) continue;
 

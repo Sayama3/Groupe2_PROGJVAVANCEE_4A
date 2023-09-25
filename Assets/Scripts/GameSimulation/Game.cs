@@ -98,6 +98,42 @@ public class Game
 
 		return possibleMove.ToArray();
 	}
+	
+	// 0 None, 1 up, 2 right, 3 down, 4 left
+	public bool[] GetPossibleActions(Vector2 position)
+	{
+		bool[] possibleMove = new bool[5];
+		int x = Mathf.RoundToInt(position.x);
+		int y = Mathf.RoundToInt(position.y);
+		Vector2Int Center = new Vector2Int(x, y);
+		Vector2Int Up = Center + Vector2Int.up;
+		Vector2Int Right = Center + Vector2Int.right;
+		Vector2Int Down = Center + Vector2Int.down;
+		Vector2Int Left = Center + Vector2Int.left;
+
+		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove[0] = true;
+
+		if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
+		{
+			if(_gameBoard.GetCell(Up) == CellStates.None) possibleMove[1] = true;
+		}
+		if(Right.x >= 0 && Right.x < _gameBoard.Width && Right.y >= 0 && Right.y < _gameBoard.Height)
+		{
+			if(_gameBoard.GetCell(Right) == CellStates.None) possibleMove[2] = true;
+		}
+		if(Down.x >= 0 && Down.x < _gameBoard.Width && Down.y >= 0 && Down.y < _gameBoard.Height)
+		{
+			if (_gameBoard.GetCell(Down) == CellStates.None) possibleMove[3] = true;
+		}
+		if(Left.x >= 0 && Left.x < _gameBoard.Width && Left.y >= 0 && Left.y < _gameBoard.Height)
+		{
+			if(_gameBoard.GetCell(Left) == CellStates.None) possibleMove[4] = true;
+		}
+
+		Assert.IsTrue(possibleMove.Length > 0);
+
+		return possibleMove;
+	}
 
 	public bool IsPositionValidToMove(int x, int y)
 	{
