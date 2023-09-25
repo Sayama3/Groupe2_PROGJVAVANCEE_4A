@@ -100,7 +100,7 @@ public class GameManager : SerializedMonoBehaviour
             if (results[i].HasDropBomb)
             {
                 var pos = results[i].Position;
-                Vector2Int position = new Vector2Int((int)pos.x, (int)pos.y);
+                Vector2Int position = Game.Round(pos);
                 var cell = game.GetGameBoard().GetCell(position.x, position.y);
                 if (cell == CellStates.None)
                 {
@@ -126,8 +126,7 @@ public class GameManager : SerializedMonoBehaviour
 
         if (playerDead.Length > 0 && playerDead.Any( p => p))
         {
-            Debug.LogWarning("Someone is dead.");
-            //TODO: triggerthe errors.
+            //TODO: A player is dead.
         }
     }
 }

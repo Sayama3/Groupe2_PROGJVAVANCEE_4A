@@ -7,7 +7,7 @@ public enum CellStates
 	Wall,
 }
 
-public class CellStatesHelper
+public static class CellStatesHelper
 {
 	public static CellStates GetRandomCellStates()
 	{

@@ -16,10 +16,12 @@ public class ScriptableGameParameters : SerializedScriptableObject, IGameParamet
 	}
 
 	public int Width => _defaultParameters.Width;
-
 	public int Height => _defaultParameters.Height;
 	public float Speed => _defaultParameters.Speed;
 	public int BombRadius => _defaultParameters.BombRadius;
-
 	public float BombTimer => _defaultParameters.BombTimer;
+	public float BombExplosionTimer => _defaultParameters.BombExplosionTimer;
+	public int NumberOfTests => _defaultParameters.NumberOfTests;
+
+	public int NumberOfSimulations => _defaultParameters.NumberOfSimulations;
 }

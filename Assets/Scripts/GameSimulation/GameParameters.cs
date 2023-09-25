@@ -12,6 +12,9 @@ public struct GameParameters: IGameParameters
 		this.Speed = 1;
 		this.BombRadius = 2;
 		this.BombTimer = 1.5f;
+		this.BombExplosionTimer = 1.5f;
+		this.NumberOfTests = 4;
+		this.NumberOfSimulations = 8;
 	}
 	[OdinSerialize, ShowInInspector, MinValue(1), HorizontalGroup("GameSize")]
 	public int Width {get; set;}
@@ -27,4 +30,13 @@ public struct GameParameters: IGameParameters
 
 	[OdinSerialize, ShowInInspector]
     public float BombTimer { get; set; }
+
+	[OdinSerialize, ShowInInspector]
+    public float BombExplosionTimer { get; set; }
+
+	[OdinSerialize, ShowInInspector]
+	public int NumberOfTests { get; set; }
+
+	[OdinSerialize, ShowInInspector]
+	public int NumberOfSimulations { get; set; }
 }
