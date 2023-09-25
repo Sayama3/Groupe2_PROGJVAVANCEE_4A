@@ -8,7 +8,7 @@ using Sirenix.Serialization;
 public class ScriptableGameParameters : SerializedScriptableObject, IGameParameters
 {
 	[SerializeField, InlineProperty, HideLabel]
-	private GameParameters _defaultParameters = new GameParameters(1, 1, 1);
+	private GameParameters _defaultParameters = new GameParameters(1, 1);
 
 	public GameParameters GetParameters()
 	{
@@ -19,4 +19,7 @@ public class ScriptableGameParameters : SerializedScriptableObject, IGameParamet
 
 	public int Height => _defaultParameters.Height;
 	public float Speed => _defaultParameters.Speed;
+	public int BombRadius => _defaultParameters.BombRadius;
+
+	public float BombTimer => _defaultParameters.BombTimer;
 }
