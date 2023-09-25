@@ -30,7 +30,7 @@ public class Game
 	{
 		for (int i = 0; i < _gameBoard.Count; i++)
 		{
-			_gameBoard[i] = CellStatesHelper.GetRandomCellStates();
+			_gameBoard[i] = Helpers.GetRandomEnum<CellStates>();
 		}
 	}
 
@@ -67,15 +67,15 @@ public class Game
 	public Vector2Int[] GetPossibleDirection(Vector2 position)
 	{
 		List<Vector2Int> possibleMove = new List<Vector2Int>(5);
-		int x = (int)(position.x);
-		int y = (int)(position.y);
+		int x = Round(position.x);
+		int y = Round(position.y);
 		Vector2Int Center = new Vector2Int(x, y);
 		Vector2Int Up = Center + Vector2Int.up;
 		Vector2Int Right = Center + Vector2Int.right;
 		Vector2Int Down = Center + Vector2Int.down;
 		Vector2Int Left = Center + Vector2Int.left;
 
-		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove.Add(Center);
+		if(_gameBoard.GetCell(Center) == CellStates.None || _gameBoard.GetCell(Center) == CellStates.Bomb) possibleMove.Add(Center);
 
 		if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
 		{

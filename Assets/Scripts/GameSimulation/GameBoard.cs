@@ -7,6 +7,8 @@ using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+//TODO: We should have two array of timer one for the explosion and one for the case exploding.
+
 [Serializable]
 public class GameBoard : IReadOnlyList<CellStates>
 {
@@ -73,6 +75,7 @@ public class GameBoard : IReadOnlyList<CellStates>
 		if (!explodedBombIndexes.Contains(GetIndex(center))) explodedBombIndexes.Add(GetIndex(center));
 		else return;
 
+		// TODO: Only explode the closest destructible cell.
 		for (int j = 0; j < 2; j++)
 		{
 			for (int k = -gameParameters.BombRadius; k <= gameParameters.BombRadius; k++)
@@ -83,8 +86,6 @@ public class GameBoard : IReadOnlyList<CellStates>
 			}
 		}
 	}
-
-	#region Implement IReadOnlyList
 
 	public CellStates GetCell(int index)
 	{
@@ -148,8 +149,6 @@ public class GameBoard : IReadOnlyList<CellStates>
 		get => GetCell(index);
 		set => SetCell(index, value);
 	}
-
-	#endregion
 
 	private Vector2Int GetPosition(int index)
 	{

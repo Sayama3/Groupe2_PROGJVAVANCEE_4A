@@ -1,52 +1,47 @@
+using System;
 using UnityEngine;
 
 public class RandomPlayerController : APlayerController
 {
+    
+    private Vector2? target = null;
     public RandomPlayerController(GameObject prefab)
     {
         this.PrefabSource = prefab;
     }
-    
+
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
-        int randomAction;
-        PlayerUpdateResult res = new PlayerUpdateResult();
-        float speed = GameManager.Instance.GetCurrentGameParams().Speed;
-        var Position = this.Position;
-        bool hasDroppedBomb = false;
-        
-        bool[] possibleActions = copyGame.GetPossibleActions(Position);
-
-        Back:
-        randomAction = Random.Range(0, 5);
-        if (possibleActions[randomAction])
+        GameActions action = GameActions.None;
+        if (!target.HasValue)
         {
-            switch (randomAction)
+            action = Helpers.GetRandomEnum<GameActions>();
+            switch (action)
             {
-                case 0:
-                    res.HasDropBomb = true;
+                case GameActions.None:
+                {
+                    return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
+                }
+                case GameActions.Move:
+                {
+                    Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
+                    target = direction;
+                }
                     break;
-                case 1:
-                    Position.x -= speed * dt;
-                    break;
-                case 2:
-                    Position.x += speed * dt;
-                    break;
-                case 3:
-                    Position.y -= speed * dt;
-                    break;
-                case 4:
-                    Position.y += speed * dt;
-                    break;
+                case GameActions.Bomb:
+                    return new PlayerUpdateResult{Position = Position, HasDropBomb = true};
             }
         }
-        else
+
+        if (target.HasValue)
         {
-            // Y'a sûrement mieux
-            goto Back;
+            Position = Vector2.MoveTowards(Position, target.Value, GameManager.Instance.GetCurrentGameParams().Speed * dt);
+            if (target == Position)
+            {
+                target = null;
+            }
         }
 
-        this.Position = Position;
-        return new PlayerUpdateResult {HasDropBomb = hasDroppedBomb, Position = Position};
+        return new PlayerUpdateResult { Position = Position, HasDropBomb = false };
     }
 }
