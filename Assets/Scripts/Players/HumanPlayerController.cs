@@ -1,32 +1,37 @@
 using UnityEngine;
 
-public class HumanPlayerController : PlayerController
+public class HumanPlayerController : APlayerController
 {
-    private void Update()
+    public override PlayerUpdateResult Update(float dt, Game currentGame)
     {
+        PlayerUpdateResult res = new PlayerUpdateResult();
+        res.Position = Position;
+        
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        float speed = GameManager.Instance.GetCurrentGameParams().Speed;
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            PlaceBomb();
+            res.HasDropBomb = true;
         }
-        
-        if(horizontalInput < 0f)
+        else if(horizontalInput < 0f)
         {
-            MoveLeft();
+            res.Position.x -= speed * dt;
         }
         else if(horizontalInput > 0f)
         {
-            MoveRight();
+            res.Position.x += speed * dt;
         }
         else if(verticalInput < 0f)
         {
-            MoveDown();
+            res.Position.z -= speed * dt;
         }
         else if(verticalInput > 0f)
         {
-            MoveUp();
+            res.Position.z += speed * dt;
         }
+
+        return res;
     }
 }

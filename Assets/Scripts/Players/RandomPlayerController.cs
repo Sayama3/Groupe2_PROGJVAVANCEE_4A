@@ -1,28 +1,34 @@
 using UnityEngine;
 
-public class RandomPlayerController : PlayerController
+public class RandomPlayerController : APlayerController
 {
-    private void FixedUpdate()
+    public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
         int randomAction = Random.Range(0, 5);
 
+        PlayerUpdateResult res = new PlayerUpdateResult();
+        res.Position = Position;
+        float speed = GameManager.Instance.GetCurrentGameParams().Speed;
+        
         switch (randomAction)
         {
             case 0:
-                PlaceBomb();
+                res.HasDropBomb = true;
                 break;
             case 1:
-                MoveLeft();
+                res.Position.x -= speed * dt;
                 break;
             case 2:
-                MoveRight();
+                res.Position.x += speed * dt;
                 break;
             case 3:
-                MoveDown();
+                res.Position.z -= speed * dt;
                 break;
             case 4:
-                MoveUp();
+                res.Position.z += speed * dt;
                 break;
         }
+        
+        return res;
     }
 }

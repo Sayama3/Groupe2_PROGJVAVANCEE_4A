@@ -1,27 +1,9 @@
+using UnityEngine;
+
 public interface IPlayerController
 {
-    public static void MoveUp()
-    {
-        
-    }
-    
-    public static void MoveLeft()
-    {
-        
-    }
-    
-    public static void MoveRight()
-    {
-        
-    }
-    
-    public static void MoveDown()
-    {
-        
-    }
-
-    public static void PlaceBomb()
-    {
-        
-    }
+    public PlayerUpdateResult Update(float dt, Game copyGame);
+    public Vector3 Position { get; }
+    public Quaternion Rotation { get; }
+    public GameObject PrefabSource { get; }
 }
