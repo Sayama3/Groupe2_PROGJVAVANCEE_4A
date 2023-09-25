@@ -5,4 +5,5 @@
 	public float Speed { get; }
 	public int BombRadius { get; }
 	public float BombTimer { get; }
+	public float BombExplosionTimer { get; }
 }

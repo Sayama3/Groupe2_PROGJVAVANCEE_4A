@@ -15,7 +15,8 @@ public class GameBoard : IReadOnlyList<CellStates>
 	[SerializeField, ReadOnly]
 	private CellStates[] gameboard;
 	private Nullable<float>[] bombTimers;
-	private List<int> bombs;
+	private List<int> bombIndexes;
+	private List<int> explodedBombIndexes;
 
 	public int Width => gameParameters.Width;
 	public int Height => gameParameters.Height;
@@ -33,10 +34,15 @@ public class GameBoard : IReadOnlyList<CellStates>
 		{
 			this.bombTimers[i] = board.bombTimers[i];
 		}
-		this.bombs = new List<int>(board.bombs.Count);
-		for (int i = 0; i < board.bombs.Count; i++)
+		this.bombIndexes = new List<int>(board.bombIndexes.Count);
+		for (int i = 0; i < board.bombIndexes.Count; i++)
 		{
-			this.bombs.Add(board.bombs[i]);
+			this.bombIndexes.Add(board.bombIndexes[i]);
+		}
+		this.explodedBombIndexes = new List<int>(board.explodedBombIndexes.Count);
+		for (int i = 0; i < board.explodedBombIndexes.Count; i++)
+		{
+			this.explodedBombIndexes.Add(board.explodedBombIndexes[i]);
 		}
 	}
 
@@ -45,7 +51,37 @@ public class GameBoard : IReadOnlyList<CellStates>
 		this.gameParameters = parameters;
 		this.gameboard = new CellStates[parameters.Width * parameters.Height];
         this.bombTimers = new float?[parameters.Width * parameters.Height];
-		this.bombs = new List<int>(2);
+		this.bombIndexes = new List<int>(2);
+		this.explodedBombIndexes = new List<int>(2);
+	}
+
+	private void ExplodeCell(Vector2Int pos)
+	{
+		int index = GetIndex(pos);
+		if (gameboard[index] == CellStates.Bomb)
+		{
+			if(!explodedBombIndexes.Contains(GetIndex(pos))) Detonate(GetPosition(index));
+		}
+		else
+		{
+			SetCell(index, CellStates.None);
+		}
+	}
+
+	private void Detonate(Vector2Int center)
+	{
+		if (!explodedBombIndexes.Contains(GetIndex(center))) explodedBombIndexes.Add(GetIndex(center));
+		else return;
+
+		for (int j = 0; j < 2; j++)
+		{
+			for (int k = -gameParameters.BombRadius; k <= gameParameters.BombRadius; k++)
+			{
+				Vector2Int explodedPos = center;
+				explodedPos[j] += k;
+				if(explodedPos.x >= 0 && explodedPos.x < Width && explodedPos.y >= 0 && explodedPos.y < Height) ExplodeCell(explodedPos);
+			}
+		}
 	}
 
 	#region Implement IReadOnlyList
@@ -72,15 +108,15 @@ public class GameBoard : IReadOnlyList<CellStates>
 		Assert.IsTrue(index >= 0 && index < gameboard.Length, $"The index must be between [0, {Count}[.");
 		if (gameboard[index] == CellStates.Bomb)
 		{
-			bombTimers[bombs[index]] = null;
-			bombs.Remove(index);
+			bombTimers[index] = null;
+			bombIndexes.Remove(index);
 		}
 
 		gameboard[index] = cell;
 
 		if (cell == CellStates.Bomb)
 		{
-			bombs.Add(index);
+			bombIndexes.Add(index);
 			bombTimers[index] = gameParameters.BombTimer;
 		}
 	}
@@ -131,20 +167,29 @@ public class GameBoard : IReadOnlyList<CellStates>
 
 	public void Update(float ts)
 	{
-		for (int i = 0; i < bombs.Count; i++)
+		for (int i = bombIndexes.Count - 1; i >= 0; i--)
 		{
-			bombTimers[bombs[i]] -= ts;
+			bombTimers[bombIndexes[i]] -= ts;
+			if (bombTimers[bombIndexes[i]] <= 0)
+			{
+				Detonate(GetPosition(bombIndexes[i]));
+			}
+
+			if (bombTimers[bombIndexes[i]] <= -gameParameters.BombExplosionTimer)
+			{
+				SetCell(bombIndexes[i], CellStates.None);
+			}
 		}
 	}
 
 	public bool PositionHasExploded(int x, int y)
 	{
 		int bombRadius = gameParameters.BombRadius;
-		for (int i = 0; i < bombs.Count; i++)
+		for (int i = 0; i < bombIndexes.Count; i++)
 		{
-			Vector2Int bombPosition = GetPosition(bombs[i]);
-			Assert.IsTrue(bombTimers[bombs[i]].HasValue, "The timer is supposed to exist.");
-			if(bombTimers[bombs[i]] > 0) continue;
+			Vector2Int bombPosition = GetPosition(bombIndexes[i]);
+			Assert.IsTrue(bombTimers[bombIndexes[i]].HasValue, "The timer is supposed to exist.");
+			if(bombTimers[bombIndexes[i]] > 0) continue;
 			if (bombPosition.x != x && bombPosition.y != y) continue;
 
 			if (bombPosition.x == x && (bombPosition.y - bombRadius < y && bombPosition.y + bombRadius > y))

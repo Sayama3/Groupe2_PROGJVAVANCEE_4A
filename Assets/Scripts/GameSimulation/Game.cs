@@ -103,6 +103,10 @@ public class Game
 	public bool[] GetPossibleActions(Vector2 position)
 	{
 		bool[] possibleMove = new bool[5];
+		for (int i = 0; i < possibleMove.Length; i++)
+		{
+			possibleMove[i] = false;
+		}
 		int x = Round(position.x);
 		int y = Round(position.y);
 		Vector2Int Center = new Vector2Int(x, y);
@@ -145,8 +149,13 @@ public class Game
 		return false;
 	}
 
-	private int Round(float input)
+	public static int Round(float input)
 	{
 		return Mathf.RoundToInt(input);
+	}
+
+	public static Vector2Int Round(Vector2 input)
+	{
+		return new Vector2Int(Round(input.x), Round(input.y));
 	}
 }
