@@ -101,7 +101,7 @@ public class GameManager : SerializedMonoBehaviour
         for (int i = 0; i < PlayerManager.Instance.players.Count; i++)
         {
             var player = PlayerManager.Instance.players[i];
-            playerDead[i] = game.PositionHasExploded(player.Position.x, player.Position.z);
+            playerDead[i] = game.PositionHasExploded(player.Position.x, player.Position.y);
         }
 
         if (playerDead.Any())
