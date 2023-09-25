@@ -103,14 +103,14 @@ public class Game
 	public bool[] GetPossibleActions(Vector2 position)
 	{
 		bool[] possibleMove = new bool[5];
-		int x = Mathf.RoundToInt(position.x);
-		int y = Mathf.RoundToInt(position.y);
+		int x = Round(position.x);
+		int y = Round(position.y);
 		Vector2Int Center = new Vector2Int(x, y);
-		Vector2Int Up = Center + Vector2Int.up;
-		Vector2Int Right = Center + Vector2Int.right;
-		Vector2Int Down = Center + Vector2Int.down;
-		Vector2Int Left = Center + Vector2Int.left;
-
+		Vector2Int Up = new Vector2Int(x,Round(position.y + 0.5f)); //.5f is player radius
+		Vector2Int Right = new Vector2Int(Round(position.x + 0.5f),y);
+		Vector2Int Down = new Vector2Int(x,Round(position.y - 0.5f));
+		Vector2Int Left = new Vector2Int(Round(position.x - 0.5f),y);
+		
 		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove[0] = true;
 
 		if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
@@ -143,5 +143,10 @@ public class Game
 		}
 
 		return false;
+	}
+
+	private int Round(float input)
+	{
+		return Mathf.RoundToInt(input);
 	}
 }

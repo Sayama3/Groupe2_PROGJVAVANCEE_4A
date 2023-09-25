@@ -65,7 +65,13 @@ public class GameManager : SerializedMonoBehaviour
             PlayerManager.Instance.players[i].Position = new Vector2(randomX, randomY);
             game.GetGameBoard().SetCell(randomX, randomY, CellStates.None);
             game.GetGameBoard().SetCell(randomX+1, randomY, CellStates.None);
+            game.GetGameBoard().SetCell(randomX-1, randomY, CellStates.None);
             game.GetGameBoard().SetCell(randomX, randomY+1, CellStates.None);
+            game.GetGameBoard().SetCell(randomX, randomY-1, CellStates.None);
+            game.GetGameBoard().SetCell(randomX+1, randomY+1, CellStates.None);
+            game.GetGameBoard().SetCell(randomX+1, randomY-1, CellStates.None);
+            game.GetGameBoard().SetCell(randomX-1, randomY+1, CellStates.None);
+            game.GetGameBoard().SetCell(randomX-1, randomY-1, CellStates.None);
         }
         // TODO: Add player position ?
         // TODO: Add empty spots around player
