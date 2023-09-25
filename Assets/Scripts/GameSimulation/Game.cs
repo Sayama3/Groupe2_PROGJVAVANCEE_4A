@@ -54,8 +54,8 @@ public class Game
 
 	public bool PositionHasExploded(float positionX, float positionZ)
 	{
-		int x = Mathf.RoundToInt(positionX);
-		int z = Mathf.RoundToInt(positionZ);
+		int x = (int)positionX;
+		int z = (int)positionZ;
 		return PositionHasExploded(x, z);
 	}
 
@@ -67,8 +67,8 @@ public class Game
 	public Vector2Int[] GetPossibleDirection(Vector2 position)
 	{
 		List<Vector2Int> possibleMove = new List<Vector2Int>(5);
-		int x = Mathf.RoundToInt(position.x);
-		int y = Mathf.RoundToInt(position.y);
+		int x = (int)(position.x);
+		int y = (int)(position.y);
 		Vector2Int Center = new Vector2Int(x, y);
 		Vector2Int Up = Center + Vector2Int.up;
 		Vector2Int Right = Center + Vector2Int.right;

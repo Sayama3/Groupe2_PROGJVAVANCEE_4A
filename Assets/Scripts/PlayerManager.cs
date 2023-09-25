@@ -40,10 +40,14 @@ public class PlayerManager : MonoBehaviour
 	#endregion
 
 	public List<IPlayerController> players = new ();
+	[SerializeField] private GameObject humanPrefab;
+	[SerializeField] private GameObject iaPrefab;
+	[SerializeField] private GameObject randomPrefab;
 
 	private void InitSelf()
 	{
-		
+		players.Add(new HumanPlayerController(humanPrefab));
+		players.Add(new RandomPlayerController(randomPrefab));
 	}
 
 	public PlayerUpdateResult[] UpdatePlayers(float dt, ref Game currentGame)
@@ -53,7 +57,7 @@ public class PlayerManager : MonoBehaviour
 		{
 			var copy = new Game(currentGame);
 			IPlayerController player = players[i];
-			// results[i] = player.Update(dt, currentGame);
+			results[i] = player.Update(dt, currentGame);
 		}
 
 		return results;

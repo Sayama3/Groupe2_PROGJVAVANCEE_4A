@@ -3,6 +3,6 @@ using UnityEngine;
 
 public struct PlayerUpdateResult
 {
-	public Vector3 Position;
+	public Vector2 Position;
 	public bool HasDropBomb;
 }

@@ -30,7 +30,7 @@ public class GameRenderer : MonoBehaviour
 	{
         //TODO: Destroy Existing.
 		var board = game.GetGameBoard();
-		currentGameBoard = board;
+		currentGameBoard = new GameBoard(board);
 		var w = board.Width;
 		var h = board.Height;
 		boardParent.position = new Vector3(-((float)w)*0.5f, height, -((float)h)*0.5f);
@@ -59,7 +59,7 @@ public class GameRenderer : MonoBehaviour
 		for (int i = 0; i < instance.players.Count; i++)
 		{
 			var player = instance.players[i];
-			Vector3 position = player.Position;
+			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
 			Quaternion rotation = player.Rotation;
 			GameObject src = player.PrefabSource;
 			players[i] = Instantiate(src, boardParent, false);
@@ -86,8 +86,8 @@ public class GameRenderer : MonoBehaviour
 			for (int y = 0; y < h; y++)
 			{
 				int index = x + y * w;
-				var cell = board.GetCell(index);
-				var currentCell = currentGameBoard.GetCell(index);
+				CellStates cell = board.GetCell(index);
+				CellStates currentCell = currentGameBoard.GetCell(index);
 				if (currentCell != cell)
 				{
 					Destroy(renderBoard[index]);
@@ -96,6 +96,7 @@ public class GameRenderer : MonoBehaviour
 					var instance = Instantiate(srcObj, boardParent, false);
 					renderBoard[x + y * w] = instance;
 					instance.transform.localPosition = position;
+					currentGameBoard.SetCell(index, cell);
 				}
 			}
 		}
@@ -109,7 +110,7 @@ public class GameRenderer : MonoBehaviour
 		for (int i = 0; i < players.Length; i++)
 		{
 			var player = instance.players[i];
-			Vector3 position = player.Position;
+			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
 			Quaternion rotation = player.Rotation;
 
 			var playerTransform = players[i].transform;

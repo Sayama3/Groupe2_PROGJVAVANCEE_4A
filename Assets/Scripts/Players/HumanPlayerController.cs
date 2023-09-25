@@ -9,8 +9,8 @@ public class HumanPlayerController : APlayerController
     
     public override PlayerUpdateResult Update(float dt, Game currentGame)
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
         float speed = GameManager.Instance.GetCurrentGameParams().Speed;
         var Position = this.Position;
         
