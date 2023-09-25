@@ -218,4 +218,9 @@ public class Game
 	{
 		return new Vector2Int(Round(input.x), Round(input.y));
 	}
+
+	public CellStates GetCell(Vector2 position)
+	{
+		return _gameBoard.GetCell(Round(position));
+	}
 }
