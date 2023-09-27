@@ -10,7 +10,6 @@ public enum PlayerType { None, Human, Random, MCTS }
 
 public class MainMenuManager : MonoBehaviour
 {
-    public PlayerType[] playerTypes = new PlayerType[4];
     [SerializeField] private TMP_Dropdown[] playerDropdowns;
     
     [SerializeField] private AudioMixer audioMixer;
@@ -48,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
     {
         for (int i = 0; i < playerDropdowns.Length; i++)
         {
-            playerTypes[i] = (PlayerType)playerDropdowns[i].value;
+            MenuToGame.Instance.playerTypes[i] = (PlayerType)playerDropdowns[i].value;
         }
     }
 

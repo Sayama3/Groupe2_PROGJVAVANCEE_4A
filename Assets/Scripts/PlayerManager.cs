@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,8 +47,39 @@ public class PlayerManager : MonoBehaviour
 
 	private void InitSelf()
 	{
-		players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
-		players.Add(new RandomPlayerController(randomPrefab));
+		int humanCount = 0;
+		foreach (PlayerType type in MenuToGame.Instance.playerTypes)
+		{
+			switch (type)
+			{
+				case PlayerType.None:
+					break;
+				case PlayerType.Human:
+					switch (humanCount)
+					{
+						case 0:
+							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
+							break;
+						case 1:
+							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Two));
+							break;
+						case 2:
+							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Three));
+							break;
+						case 3:
+							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Four));
+							break;
+					}
+					humanCount++;
+					break;
+				case PlayerType.Random:
+					players.Add(new RandomPlayerController(randomPrefab));
+					break;
+				case PlayerType.MCTS:
+					players.Add(new RandomPlayerController(iaPrefab));
+					break;
+			}
+		}
 	}
 
 	public PlayerUpdateResult[] UpdatePlayers(float dt, ref Game currentGame)
