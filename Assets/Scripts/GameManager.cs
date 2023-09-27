@@ -127,12 +127,13 @@ public class GameManager : SerializedMonoBehaviour
 
     private void UpdatePlayers(float dt)
     {
-        var results = PlayerManager.Instance.UpdatePlayers(dt, ref game);
+        var results = UpdatePlayers(dt, ref game);
         for (int i = 0; i < results.Length; i++)
         {
-            if (results[i].HasDropBomb)
+            if (results[i] == null) continue;
+            if (results[i].Value.HasDropBomb)
             {
-                var pos = results[i].Position;
+                var pos = results[i].Value.Position;
                 Vector2Int position = Game.Round(pos);
                 var cell = game.GetGameBoard().GetCell(position.x, position.y);
                 if (cell == CellStates.None)
@@ -141,6 +142,23 @@ public class GameManager : SerializedMonoBehaviour
                 }
             }
         }
+    }
+    
+    public PlayerUpdateResult?[] UpdatePlayers(float dt, ref Game currentGame)
+    {
+        PlayerUpdateResult?[] results = new PlayerUpdateResult?[players.Length];
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i] == null)
+            {
+                results[i] = null;
+                continue;
+            }
+            var copy = new Game(currentGame);
+            results[i] = players[i].Update(dt, currentGame);
+        }
+
+        return results;
     }
 
     private void UpdateGame(float dt)
