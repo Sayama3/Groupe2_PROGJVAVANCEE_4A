@@ -47,6 +47,7 @@ public class PlayerManager : MonoBehaviour
 
 	private void InitSelf()
 	{
+		players.Clear();
 		int humanCount = 0;
 		if (MenuToGame.Instance != null)
 		{
