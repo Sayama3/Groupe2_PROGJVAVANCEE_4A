@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Sirenix.Serialization;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 
@@ -12,6 +8,7 @@ public class GameManager : SerializedMonoBehaviour
     #region Singleton
 
     private static GameManager instance;
+    private static bool isPaused = false;
 
     private static GameManager GetInstance()
     {
@@ -86,6 +83,7 @@ public class GameManager : SerializedMonoBehaviour
 
     private void Update()
     {
+        if(isPaused) return;
         var dt = Time.deltaTime;
         UpdatePlayers(dt);
         UpdateGame(dt);

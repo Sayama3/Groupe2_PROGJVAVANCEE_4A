@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum PlayerType { None, Human, Random, MCTS }
@@ -10,6 +11,7 @@ public enum PlayerType { None, Human, Random, MCTS }
 public class MainMenuManager : MonoBehaviour
 {
     public PlayerType[] playerTypes = new PlayerType[4];
+    [SerializeField] private TMP_Dropdown[] playerDropdowns;
     
     [SerializeField] private AudioMixer audioMixer;
 
@@ -39,7 +41,15 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        
+        SceneManager.LoadScene("SceneIannis");
+    }
+
+    public void ChangedPlayer()
+    {
+        for (int i = 0; i < playerDropdowns.Length; i++)
+        {
+            playerTypes[i] = (PlayerType)playerDropdowns[i].value;
+        }
     }
 
     public void ToggleOptions()
@@ -64,7 +74,6 @@ public class MainMenuManager : MonoBehaviour
         {
             while (optionsMenu.position.x <= optionsMenuDeployed.position.x - 0.01)
             {
-                print("routine running");
                 Vector3 position = optionsMenu.position;
                 float newX = Mathf.Lerp(position.x, optionsMenuDeployed.position.x,
                     optionsDeploySpeed * Time.deltaTime);
@@ -77,7 +86,6 @@ public class MainMenuManager : MonoBehaviour
         {
             while (optionsMenu.position.x >= optionsMenuRetractedPos.x + 0.01)
             {
-                print("routine running");
                 Vector3 position = optionsMenu.transform.position;
                 float newX = Mathf.Lerp(position.x, optionsMenuRetractedPos.x,
                     optionsDeploySpeed * Time.deltaTime);
