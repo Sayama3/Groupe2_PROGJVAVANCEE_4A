@@ -20,4 +20,34 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: _defaultParameters
+      Entry: 7
+      Data: GameParameters, Assembly-CSharp
+    - Name: Width
+      Entry: 3
+      Data: 15
+    - Name: Height
+      Entry: 3
+      Data: 15
+    - Name: Speed
+      Entry: 4
+      Data: 3
+    - Name: BombRadius
+      Entry: 3
+      Data: 3
+    - Name: BombTimer
+      Entry: 4
+      Data: 1.5
+    - Name: BombExplosionTimer
+      Entry: 4
+      Data: 1.5
+    - Name: NumberOfTests
+      Entry: 3
+      Data: 4
+    - Name: NumberOfSimulations
+      Entry: 3
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 

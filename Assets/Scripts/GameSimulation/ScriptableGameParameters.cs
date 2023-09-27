@@ -7,8 +7,8 @@ using Sirenix.Serialization;
 [HideMonoScript]
 public class ScriptableGameParameters : SerializedScriptableObject, IGameParameters
 {
-	[SerializeField, InlineProperty, HideLabel]
-	private GameParameters _defaultParameters = new GameParameters(1, 1);
+	[OdinSerialize, ShowInInspector, InlineProperty, HideLabel]
+	private GameParameters _defaultParameters = new GameParameters(15, 15);
 
 	public GameParameters GetParameters()
 	{
