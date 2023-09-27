@@ -34,6 +34,13 @@ public class MainMenuManager : MonoBehaviour
     
     private void Start()
     {
+        optionsMenuRetractedPos = optionsMenu.position;
+        SetupResolution();
+        ReadPrefs();
+    }
+
+    private void SetupResolution()
+    {
         resolutionDropdown.ClearOptions();
         resolutions = Screen.resolutions;
         currentRefreshRate = Screen.currentResolution.refreshRateRatio.value;
@@ -54,15 +61,6 @@ public class MainMenuManager : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(optionLabels);
-
-        optionsMenuRetractedPos = optionsMenu.position;
-
-        ReadPrefs();
-    }
-
-    private void SetupResolution()
-    {
-        
     }
 
     public void StartGame()
