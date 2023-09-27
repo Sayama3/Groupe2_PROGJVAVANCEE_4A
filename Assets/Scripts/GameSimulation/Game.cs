@@ -99,7 +99,7 @@ public class Game
 		return possibleMove.ToArray();
 	}
 
-	// 0 None, 1 up, 2 right, 3 down, 4 left, (5 bomb ?)
+	// 0 None, 1 up, 2 right, 3 down, 4 left, 5 bomb
 	public bool[] GetPossibleActions(Vector2 position)
 	{
 		bool[] possibleMove = new bool[6];
@@ -110,16 +110,16 @@ public class Game
 		possibleMove[0] = true; // Foireux
 		if (_gameBoard.GetCell(center) == CellStates.None) possibleMove[5] = true;
 		
-		const float e = .01f;
+		const float e = .1f;
 		bool centeredOnX = (Mathf.Abs(position.x - Round(position.x)) <= e);
 		bool centeredOnY = (Mathf.Abs(position.y - Round(position.y)) <= e);
 
 		if (centeredOnX && centeredOnY) // On 1 square, check everything
 		{
-			Vector2Int up = new Vector2Int(x,Round(position.y + 0.5f)); //.5f is player capsule radius
-			Vector2Int right = new Vector2Int(Round(position.x + 0.5f),y);
-			Vector2Int down = new Vector2Int(x,Round(position.y - 0.5f));
-			Vector2Int left = new Vector2Int(Round(position.x - 0.5f),y);
+			Vector2Int up = new Vector2Int(x,y+1); //.5f is player capsule radius
+			Vector2Int right = new Vector2Int(x+1,y);
+			Vector2Int down = new Vector2Int(x,y-1);
+			Vector2Int left = new Vector2Int(x-1,y);
 			
 			if(PosIsInBoard(up))
 			{
@@ -166,10 +166,10 @@ public class Game
 			
 			int xFloor = Mathf.FloorToInt(position.x);
 			
-			Vector2Int topLeft = new Vector2Int(xFloor - 1,y + 1);
-			Vector2Int topRight = new Vector2Int(xFloor + 1,y + 1);
-			Vector2Int bottomLeft = new Vector2Int(xFloor - 1,y);
-			Vector2Int bottomRight = new Vector2Int(xFloor + 1,y);
+			Vector2Int topLeft = new Vector2Int(xFloor,y+1);
+			Vector2Int bottomLeft = new Vector2Int(xFloor,y-1);
+			Vector2Int topRight = new Vector2Int(xFloor+1,y+1);
+			Vector2Int bottomRight = new Vector2Int(xFloor+1,y-1);
 
 			if(PosIsInBoard(topLeft) && PosIsInBoard(topRight))
 			{
