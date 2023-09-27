@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
 
 	private void InitSelf()
 	{
-		players.Add(new HumanPlayerController(humanPrefab));
+		players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
 		players.Add(new RandomPlayerController(randomPrefab));
 	}
 
