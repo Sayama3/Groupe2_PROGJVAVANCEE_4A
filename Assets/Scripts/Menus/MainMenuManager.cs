@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,8 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
-    private int currentResolutionIndex = 0;
+    private double currentRefreshRate;
+    private int currentResolutionIndex;
 
     [SerializeField] private Toggle fullScreenToggle;
     private bool isFullscreen;
@@ -26,7 +28,7 @@ public class MainMenuManager : MonoBehaviour
     private Vector3 optionsMenuRetractedPos;
     private bool isOptionsMenuDeployed = false;
 
-    [SerializeField] private float optionsDeploySpeed = 0.5f;
+    [SerializeField] private float optionsDeploySpeed = 5f;
 
     private Coroutine lerpCorout = null;
     
@@ -34,10 +36,33 @@ public class MainMenuManager : MonoBehaviour
     {
         resolutionDropdown.ClearOptions();
         resolutions = Screen.resolutions;
+        currentRefreshRate = Screen.currentResolution.refreshRateRatio.value;
+
+        List<string> optionLabels = new List<string>();
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            optionLabels.Add(resolutions[i].width + " x " + 
+                             resolutions[i].height + " " +
+                             (int)resolutions[i].refreshRateRatio.value + "Hz");
+
+            if (resolutions[i].width == Screen.currentResolution.width &&
+                resolutions[i].height == Screen.currentResolution.height &&
+                (int)resolutions[i].refreshRateRatio.value == (int)Screen.currentResolution.refreshRateRatio.value)
+            {
+                currentResolutionIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(optionLabels);
 
         optionsMenuRetractedPos = optionsMenu.position;
 
         ReadPrefs();
+    }
+
+    private void SetupResolution()
+    {
+        
     }
 
     public void StartGame()
@@ -45,7 +70,7 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("SceneIannis");
     }
 
-    public void ChangedPlayer()
+    public void UpdatePlayers()
     {
         for (int i = 0; i < playerDropdowns.Length; i++)
         {
@@ -55,7 +80,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToggleOptions()
     {
-        if(lerpCorout != null) StopCoroutine(lerpCorout); // This is bugged
+        if(lerpCorout != null) StopCoroutine(lerpCorout);
         
         if (isOptionsMenuDeployed)
         {
@@ -75,11 +100,7 @@ public class MainMenuManager : MonoBehaviour
         {
             while (optionsMenu.position.x <= optionsMenuDeployed.position.x - 0.01)
             {
-                Vector3 position = optionsMenu.position;
-                float newX = Mathf.Lerp(position.x, optionsMenuDeployed.position.x,
-                    optionsDeploySpeed * Time.deltaTime);
-                position = new Vector3(newX, position.y, position.z);
-                optionsMenu.transform.position = position;
+                Lerp(optionsMenuDeployed.position.x);
                 yield return null;
             }
         }
@@ -87,13 +108,17 @@ public class MainMenuManager : MonoBehaviour
         {
             while (optionsMenu.position.x >= optionsMenuRetractedPos.x + 0.01)
             {
-                Vector3 position = optionsMenu.transform.position;
-                float newX = Mathf.Lerp(position.x, optionsMenuRetractedPos.x,
-                    optionsDeploySpeed * Time.deltaTime);
-                position = new Vector3(newX, position.y, position.z);
-                optionsMenu.transform.position = position;
+                Lerp(optionsMenuRetractedPos.x);
                 yield return null;
             }
+        }
+
+        void Lerp(float pos)
+        {
+            Vector3 position = optionsMenu.position;
+            float newX = Mathf.Lerp(position.x, pos, optionsDeploySpeed * Time.deltaTime);
+            position = new Vector3(newX, position.y, position.z);
+            optionsMenu.position = position;
         }
     }
 

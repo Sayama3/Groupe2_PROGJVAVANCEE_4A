@@ -595,7 +595,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -0.5}
+  m_AnchoredPoUpdatePlayers, y: -0.5}
   m_SizeDelta: {x: -30, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &69940056
@@ -6715,7 +6715,7 @@ PrefabInstance:
       objectReference: {fileID: 1466226479}
     - target: {fileID: 2410443177893734444, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangedPlayer
+      value: UpdatePlayers
       objectReference: {fileID: 0}
     - target: {fileID: 5736813909602089797, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_Name
@@ -9295,7 +9295,7 @@ PrefabInstance:
       objectReference: {fileID: 1466226479}
     - target: {fileID: 2410443177893734444, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangedPlayer
+      value: UpdatePlayers
       objectReference: {fileID: 0}
     - target: {fileID: 5736813909602089797, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_Name
@@ -10439,7 +10439,7 @@ PrefabInstance:
       objectReference: {fileID: 1466226479}
     - target: {fileID: 2410443177893734444, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangedPlayer
+      value: UpdatePlayers
       objectReference: {fileID: 0}
     - target: {fileID: 5736813909602089797, guid: d66f1bd0d36033747a31ae043bfe6152, type: 3}
       propertyPath: m_Name
