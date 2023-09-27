@@ -60,6 +60,16 @@ public class Game
 		return PositionHasExploded(x, z);
 	}
 
+	public bool PositionHasExploded(Vector2 position)
+	{
+		return PositionHasExploded(Round(position));
+	}
+
+	public bool PositionHasExploded(Vector2Int position)
+	{
+		return _gameBoard.PositionHasExploded(position.x, position.y);
+	}
+
 	public bool PositionHasExploded(int positionX, int positionZ)
 	{
 		return _gameBoard.PositionHasExploded(positionX, positionZ);
@@ -101,7 +111,7 @@ public class Game
 	}
 
 	// 0 None, 1 up, 2 right, 3 down, 4 left, 5 bomb
-	public bool[] GetPossibleDirections(Vector2 position)
+	public bool[] GetPossibleActions(Vector2 position)
 	{
 		bool[] possibleMove = new bool[6];
 		int x = Round(position.x);
@@ -224,13 +234,14 @@ public class Game
 		return _gameBoard.GetCell(Round(position));
 	}
 
-	public void UpdatePlayers(PlayerUpdateResult[] results)
+	public void UpdatePlayers(PlayerUpdateResult?[] results)
 	{
 		for (int i = 0; i < results.Length; i++)
 		{
-			if (results[i].HasDropBomb)
+			if (results[i] == null) continue;	
+			if (results[i].Value.HasDropBomb)
 			{
-				var pos = results[i].Position;
+				var pos = results[i].Value.Position;
 				Vector2Int position = Game.Round(pos);
 				var cell = GetGameBoard().GetCell(position.x, position.y);
 				if (cell == CellStates.None)

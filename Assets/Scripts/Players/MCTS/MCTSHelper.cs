@@ -13,7 +13,7 @@ public class MCTSHelper
 		MCTSAction actions = MCTSAction.None;
 
 		// Movement Actions
-		var directions = copyGame.GetPossibleDirections(position);
+		var directions = copyGame.GetPossibleActions(position);
 		if (directions[1]) actions &= MCTSAction.MoveUp;
 		if (directions[2]) actions &= MCTSAction.MoveRight;
 		if (directions[3]) actions &= MCTSAction.MoveDown;
