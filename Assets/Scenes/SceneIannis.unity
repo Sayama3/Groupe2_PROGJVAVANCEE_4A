@@ -366,6 +366,7 @@ MonoBehaviour:
   boardParent: {fileID: 2026760242}
   height: 0
   none: {fileID: 8182833810878272927, guid: 64bb5a0be108af6409ffa627861cc66f, type: 3}
+  explodedCell: {fileID: 8182833810878272927, guid: f9da810732c35d4408fc115ae7059544, type: 3}
   bomb: {fileID: 1245422946858787843, guid: 09cc1e1630e89bf42afd5d41830fa1c1, type: 3}
   wall: {fileID: 3156100060051615229, guid: 455ff83448013f848a8c171818b7abd4, type: 3}
 --- !u!4 &745794275

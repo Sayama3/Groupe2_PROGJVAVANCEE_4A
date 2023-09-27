@@ -183,6 +183,13 @@ public class GameManager : SerializedMonoBehaviour
         int numberPlayerDead = playerDead.Count(p => p);
         if (numberPlayerDead == playerDead.Length)
         {
+            for (int i = 0; i < playerDead.Length; i++)
+            {
+                if (players[i] == null) continue;
+                OnPlayerLoose?.Invoke(players[i], i);
+                players[i] = null;
+            }
+
             OnGameTie?.Invoke();
             gameIsOn = false;
             OnGameEnd?.Invoke();
@@ -195,6 +202,7 @@ public class GameManager : SerializedMonoBehaviour
                 if (playerDead[i])
                 {
                     OnPlayerLoose?.Invoke(players[i], i);
+                    players[i] = null;
                 }
                 else
                 {

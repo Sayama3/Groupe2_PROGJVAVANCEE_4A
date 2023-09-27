@@ -12,6 +12,7 @@ public class GameRenderer : MonoBehaviour
 	[SerializeField] private Transform boardParent;
 	[SerializeField] private float height = 0;
 	[SerializeField, Required] private GameObject none;
+	[SerializeField, Required] private GameObject explodedCell;
 	[SerializeField, Required] private GameObject bomb;
 	[SerializeField, Required] private GameObject wall;
 
@@ -22,12 +23,20 @@ public class GameRenderer : MonoBehaviour
 	private void Start()
 	{
 		GameManager.Instance.OnGameStart += StartEverything;
+		GameManager.Instance.OnGameEnd += EndGame;
 		if(GameManager.GameIsOn()) StartEverything();
 	}
 
 	private void OnDestroy()
 	{
-        GameManager.Instance.OnGameStart -= StartEverything;
+		GameManager.Instance.OnGameStart -= StartEverything;
+		GameManager.Instance.OnGameStart -= EndGame;
+	}
+
+	private void EndGame()
+	{
+		UpdateBoard();
+		UpdatePlayers();
 	}
 
 	private void StartEverything()
@@ -43,7 +52,7 @@ public class GameRenderer : MonoBehaviour
 		{
 			for (int i = renderBoard.Length - 1; i >= 0; i--)
 			{
-                if(renderBoard[i] == null) continue;
+				if(renderBoard[i] == null) continue;
 				Destroy(renderBoard[i]);
 				renderBoard[i] = null;
 			}
@@ -53,7 +62,7 @@ public class GameRenderer : MonoBehaviour
 		{
 			for (int i = players.Length - 1; i >= 0; i--)
 			{
-                if(players[i] == null) continue;
+				if(players[i] == null) continue;
 				Destroy(players[i]);
 				players[i] = null;
 			}
@@ -63,7 +72,7 @@ public class GameRenderer : MonoBehaviour
 
 	private void InitBoard()
 	{
-        //TODO: Destroy Existing.
+		//TODO: Destroy Existing.
 		currentGameBoard = game.GetCopyGameBoard();
 		var w = currentGameBoard.Width;
 		var h = currentGameBoard.Height;
@@ -87,7 +96,7 @@ public class GameRenderer : MonoBehaviour
 
 	private void InitPlayer()
 	{
-        //TODO: Destroy Existing.
+		//TODO: Destroy Existing.
 		var instance = PlayerManager.Instance;
 		players = new GameObject[instance.players.Count];
 		for (int i = 0; i < instance.players.Count; i++)
@@ -131,9 +140,31 @@ public class GameRenderer : MonoBehaviour
 					Vector3 position = new Vector3(x, 0, y);
 					var srcObj = GetAssociatedGameObject(cell);
 					var instance = Instantiate(srcObj, boardParent, false);
-					renderBoard[x + y * w] = instance;
+					renderBoard[index] = instance;
 					instance.transform.localPosition = position;
 					currentGameBoard.SetCell(index, cell);
+				}
+
+				if (cell == CellStates.None)
+				{
+					bool hasExploded = board.PositionHasExploded(x, y);
+					var instance = renderBoard[index];
+					if(instance.CompareTag("NoneCell") && hasExploded)
+					{
+						Destroy(renderBoard[index]);
+						Vector3 position = new Vector3(x, 0, y);
+						var newInstance = Instantiate(explodedCell, boardParent, false);
+						renderBoard[index] = newInstance;
+						newInstance.transform.localPosition = position;
+					}
+					else if(instance.CompareTag("ExplodedCell") && !hasExploded)
+					{
+						Destroy(renderBoard[index]);
+						Vector3 position = new Vector3(x, 0, y);
+						var newInstance = Instantiate(none, boardParent, false);
+						renderBoard[index] = newInstance;
+						newInstance.transform.localPosition = position;
+					}
 				}
 			}
 		}

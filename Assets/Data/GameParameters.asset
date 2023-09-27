@@ -35,7 +35,7 @@ MonoBehaviour:
       Data: 3
     - Name: BombRadius
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: BombTimer
       Entry: 4
       Data: 1.5
