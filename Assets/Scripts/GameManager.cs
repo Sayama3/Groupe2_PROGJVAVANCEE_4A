@@ -172,7 +172,11 @@ public class GameManager : SerializedMonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             var player = players[i];
-            if (player == null) continue;
+            if (player == null)
+            {
+                playerDead[i] = true;
+                continue;
+            }
             playerDead[i] = game.PositionHasExploded(player.Position.x, player.Position.y);
         }
 
