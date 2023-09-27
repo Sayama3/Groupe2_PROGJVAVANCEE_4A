@@ -2028,6 +2028,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485466755}
   m_CullTransparentMesh: 1
+--- !u!1 &491548414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 491548416}
+  - component: {fileID: 491548415}
+  m_Layer: 0
+  m_Name: MenuToGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &491548415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491548414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c10a769721a95e46814a0915f4e047b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTypes: 00000000000000000000000000000000
+--- !u!4 &491548416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491548414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &564595326
 GameObject:
   m_ObjectHideFlags: 0
@@ -7101,7 +7146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633129154df79b14bbd2b5456a3e4447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTypes: 00000000000000000000000000000000
   playerDropdowns:
   - {fileID: 2015376327}
   - {fileID: 322005569}
@@ -9588,8 +9632,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
+  m_HorizontalAxis: Horizontal1
+  m_VerticalAxis: Vertical1
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
@@ -10784,3 +10828,4 @@ SceneRoots:
   - {fileID: 1258130795}
   - {fileID: 1927732369}
   - {fileID: 1466226480}
+  - {fileID: 491548416}
