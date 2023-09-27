@@ -8,12 +8,12 @@ public class MenuToGame : MonoBehaviour
 
     private static MenuToGame instance;
 
-    private static MenuToGame GetInstance()
+    private static MenuToGame GetInstance(bool createIfNull)
     {
         if (instance == null)
         {
             instance = FindObjectOfType<MenuToGame>();
-            if (instance == null)
+            if (createIfNull && instance == null)
             {
                 var obj = new GameObject(nameof(MenuToGame), typeof(MenuToGame));
                 instance = obj.GetComponent<MenuToGame>();
@@ -21,7 +21,7 @@ public class MenuToGame : MonoBehaviour
         }
         return instance;
     }
-    public static MenuToGame Instance => GetInstance();
+    public static MenuToGame Instance => GetInstance(false);
     public void Awake()
     {
         if (instance != null && instance != this)

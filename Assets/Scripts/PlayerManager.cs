@@ -48,37 +48,46 @@ public class PlayerManager : MonoBehaviour
 	private void InitSelf()
 	{
 		int humanCount = 0;
-		foreach (PlayerType type in MenuToGame.Instance.playerTypes)
+		if (MenuToGame.Instance != null)
 		{
-			switch (type)
+			foreach (PlayerType type in MenuToGame.Instance.playerTypes)
 			{
-				case PlayerType.None:
-					break;
-				case PlayerType.Human:
-					switch (humanCount)
-					{
-						case 0:
-							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
-							break;
-						case 1:
-							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Two));
-							break;
-						case 2:
-							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Three));
-							break;
-						case 3:
-							players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Four));
-							break;
-					}
-					humanCount++;
-					break;
-				case PlayerType.Random:
-					players.Add(new RandomPlayerController(randomPrefab));
-					break;
-				case PlayerType.MCTS:
-					players.Add(new RandomPlayerController(iaPrefab));
-					break;
+				switch (type)
+				{
+					case PlayerType.None:
+						break;
+					case PlayerType.Human:
+						switch (humanCount)
+						{
+							case 0:
+								players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
+								break;
+							case 1:
+								players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Two));
+								break;
+							case 2:
+								players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Three));
+								break;
+							case 3:
+								players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Four));
+								break;
+						}
+						humanCount++;
+						break;
+					case PlayerType.Random:
+						players.Add(new RandomPlayerController(randomPrefab));
+						break;
+					case PlayerType.MCTS:
+						players.Add(new RandomPlayerController(iaPrefab));
+						break;
+				}
 			}
+		}
+		else
+		{
+			players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.One));
+			players.Add(new HumanPlayerController(humanPrefab, HumanPlayerIndex.Two));
+			players.Add(new RandomPlayerController(randomPrefab));
 		}
 	}
 

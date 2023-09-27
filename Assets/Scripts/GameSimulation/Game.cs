@@ -108,6 +108,7 @@ public class Game
 		Vector2Int center = new Vector2Int(x, y);
 
 		possibleMove[0] = true; // Foireux
+		if (_gameBoard.GetCell(center) == CellStates.None) possibleMove[5] = true;
 		
 		const float e = .01f;
 		bool centeredOnX = (Mathf.Abs(position.x - Round(position.x)) <= e);
