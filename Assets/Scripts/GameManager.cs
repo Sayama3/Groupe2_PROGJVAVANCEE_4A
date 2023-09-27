@@ -165,7 +165,7 @@ public class GameManager : SerializedMonoBehaviour
             gameIsOn = false;
             OnGameEnd?.Invoke();
         }
-        else if (numberPlayerDead == 1)
+        else if (numberPlayerDead == playerDead.Length-1)
         {
             for (int i = 0; i < playerDead.Length; i++)
             {
@@ -190,6 +190,7 @@ public class GameManager : SerializedMonoBehaviour
                 if (playerDead[i])
                 {
                     OnPlayerLoose?.Invoke(players[i], i);
+                    players[i] = null;
                 }
             }
         }
