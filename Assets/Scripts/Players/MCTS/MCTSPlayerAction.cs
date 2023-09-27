@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 
-public enum NCTSAction
+[Flags]
+public enum MCTSAction
 {
 	None = 1 << 0,
 	MoveUp = 1 << 1,

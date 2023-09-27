@@ -95,19 +95,7 @@ public class GameManager : SerializedMonoBehaviour
     private void UpdatePlayers(float dt)
     {
         var results = PlayerManager.Instance.UpdatePlayers(dt, ref game);
-        for (int i = 0; i < results.Length; i++)
-        {
-            if (results[i].HasDropBomb)
-            {
-                var pos = results[i].Position;
-                Vector2Int position = Game.Round(pos);
-                var cell = game.GetGameBoard().GetCell(position.x, position.y);
-                if (cell == CellStates.None)
-                {
-                    game.GetGameBoard().SetCell(position, CellStates.Bomb);
-                }
-            }
-        }
+        game.UpdatePlayers(results);
     }
 
     private void UpdateGame(float dt)

@@ -18,7 +18,7 @@ public class HumanPlayerController : APlayerController
         
         if (!hasDroppedBomb)
         {
-            bool[] possibleActions = copyGame.GetPossibleActions(Position);
+            bool[] possibleActions = copyGame.GetPossibleDirections(Position);
             if (verticalInput > 0 && possibleActions[1])
             {
                 Position.y += speed * dt;
