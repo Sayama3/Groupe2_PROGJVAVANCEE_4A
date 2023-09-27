@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -8,7 +10,6 @@ public class GameManager : SerializedMonoBehaviour
     #region Singleton
 
     private static GameManager instance;
-    private static bool isPaused = false;
 
     private static GameManager GetInstance()
     {
@@ -34,32 +35,66 @@ public class GameManager : SerializedMonoBehaviour
 
         DontDestroyOnLoad(this);
         instance = this;
-        InitSelf();
     }
 
     #endregion
 
+    public static bool Pause
+    {
+        get => Instance.isPaused;
+        set
+        {
+            if(value != Instance.isPaused)
+            {
+                Instance.isPaused = value;
+                Instance.OnPause?.Invoke(Instance.isPaused);
+            }
+        }
+    }
+    public static void StartGame() { Instance.PrivateStartGame();}
+    public static bool GameIsOn() => Instance.gameIsOn;
+
+    private bool isPaused = false;
+    private bool gameIsOn = false;
+    
     [SerializeField]
     private ScriptableGameParameters gameparameters;
+
     [ShowInInspector, ReadOnly]
     private Game game;
 
+    public Action<bool> OnPause;
+    public Action OnGameStart;
+    public Action OnGameEnd;
+    public Action OnGameTie;
+    public Action<IPlayerController, int> OnPlayerWin;
+    public Action<IPlayerController, int> OnPlayerLoose;
+
+    private IPlayerController[] players;
+
+
     [Button]
-    private void InitSelf()
+    private void PrivateStartGame()
     {
         game = new Game(gameparameters);
         game.Fill(CellStates.Wall);
         SetupPlayers();
+        gameIsOn = true;
+        OnGameStart?.Invoke();
     }
 
     private void SetupPlayers()
     {
-        for (int i = 0; i < PlayerManager.Instance.players.Count; i++)
+        players = new IPlayerController[PlayerManager.Instance.players.Count];
+        for (int i = 0; i < players.Length; i++)
         {
+            players[i] = PlayerManager.Instance.players[i];
+            
             int randomX = Random.Range(1, game.Width - 1);
             int randomY = Random.Range(1, game.Height - 1);
 
-            PlayerManager.Instance.players[i].Position = new Vector2(randomX, randomY);
+            players[i].Id = i;
+            players[i].Position = new Vector2(randomX, randomY);
             game.GetGameBoard().SetCell(randomX, randomY, CellStates.None);
             game.GetGameBoard().SetCell(randomX+1, randomY, CellStates.None);
             game.GetGameBoard().SetCell(randomX-1, randomY, CellStates.None);
@@ -83,7 +118,7 @@ public class GameManager : SerializedMonoBehaviour
 
     private void Update()
     {
-        if(isPaused) return;
+        if(isPaused || !gameIsOn) return;
         var dt = Time.deltaTime;
         UpdatePlayers(dt);
         UpdateGame(dt);
@@ -115,16 +150,59 @@ public class GameManager : SerializedMonoBehaviour
 
     private void CheckPlayersDeath()
     {
-        bool[] playerDead = new bool[PlayerManager.Instance.players.Count];
-        for (int i = 0; i < PlayerManager.Instance.players.Count; i++)
+        bool[] playerDead = new bool[players.Length];
+        for (int i = 0; i < players.Length; i++)
         {
-            var player = PlayerManager.Instance.players[i];
+            var player = players[i];
+            if (player == null) continue;
             playerDead[i] = game.PositionHasExploded(player.Position.x, player.Position.y);
         }
 
-        if (playerDead.Length > 0 && playerDead.Any( p => p))
+        int numberPlayerDead = playerDead.Count(p => p);
+        if (numberPlayerDead == playerDead.Length)
         {
-            //TODO: A player is dead.
+            OnGameTie?.Invoke();
+            gameIsOn = false;
+            OnGameEnd?.Invoke();
         }
+        else if (numberPlayerDead == 1)
+        {
+            for (int i = 0; i < playerDead.Length; i++)
+            {
+                if (players[i] == null) continue;
+                if (playerDead[i])
+                {
+                    OnPlayerLoose?.Invoke(players[i], i);
+                }
+                else
+                {
+                    OnPlayerWin?.Invoke(players[i], i);
+                }
+            }
+            gameIsOn = false;
+            OnGameEnd?.Invoke();
+        }
+        else if (numberPlayerDead > 0)
+        {
+            for (int i = 0; i < playerDead.Length; i++)
+            {
+                if (players[i] == null) continue;
+                if (playerDead[i])
+                {
+                    OnPlayerLoose?.Invoke(players[i], i);
+                }
+            }
+        }
+    }
+
+    public IPlayerController[] GetPlayers()
+    {
+        var p = new IPlayerController[players.Length];
+        for (int i = 0; i < players.Length; i++)
+        {
+            p[i] = players[i];
+        }
+
+        return p;
     }
 }

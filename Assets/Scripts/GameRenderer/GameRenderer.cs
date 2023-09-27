@@ -21,11 +21,46 @@ public class GameRenderer : MonoBehaviour
 
 	private void Start()
 	{
+		GameManager.Instance.OnGameStart += StartEverything;
+		if(GameManager.GameIsOn()) StartEverything();
+	}
+
+	private void OnDestroy()
+	{
+        GameManager.Instance.OnGameStart -= StartEverything;
+	}
+
+	private void StartEverything()
+	{
+		DestroyPreviousBoard();
 		InitBoard();
 		InitPlayer();
 	}
 
-	[Button]
+	private void DestroyPreviousBoard()
+	{
+		if(renderBoard is { Length: > 0 })
+		{
+			for (int i = renderBoard.Length - 1; i >= 0; i--)
+			{
+                if(renderBoard[i] == null) continue;
+				Destroy(renderBoard[i]);
+				renderBoard[i] = null;
+			}
+		}
+
+		if (players is { Length: > 0 })
+		{
+			for (int i = players.Length - 1; i >= 0; i--)
+			{
+                if(players[i] == null) continue;
+				Destroy(players[i]);
+				players[i] = null;
+			}
+		}
+	}
+
+
 	private void InitBoard()
 	{
         //TODO: Destroy Existing.
@@ -70,8 +105,11 @@ public class GameRenderer : MonoBehaviour
 
 	private void Update()
 	{
-		UpdateBoard();
-		UpdatePlayers();
+		if(GameManager.GameIsOn())
+		{
+			UpdateBoard();
+			UpdatePlayers();
+		}
 	}
 
 	private void UpdateBoard()
@@ -104,21 +142,26 @@ public class GameRenderer : MonoBehaviour
 	private void UpdatePlayers()
 	{
 		//Update Player positino and rotation.
-		var instance = PlayerManager.Instance;
-		Assert.AreEqual(instance.players.Count, players.Length);
+		var gamePlayers = GameManager.Instance.GetPlayers();
+		Assert.AreEqual(gamePlayers.Length, players.Length);
 		for (int i = 0; i < players.Length; i++)
 		{
-			var player = instance.players[i];
+			if (gamePlayers[i] == null)
+			{
+				if(players[i] != null)
+				{
+					Destroy(players[i]);
+					players[i] = null;
+				}
+				continue;
+			}
+			var player = gamePlayers[i];
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
 			Quaternion rotation = player.Rotation;
 
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
 			playerTransform.localRotation = rotation;
-			if (game.PositionHasExploded(position.x, position.z))
-			{
-				//TODO: Player i death. continue to see if there is more.
-			}
 		}
 	}
 

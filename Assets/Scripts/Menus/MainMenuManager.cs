@@ -28,6 +28,8 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private float optionsDeploySpeed = 0.5f;
 
+    private Coroutine lerpCorout = null;
+    
     private void Start()
     {
         resolutionDropdown.ClearOptions();
@@ -53,17 +55,17 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToggleOptions()
     {
-        StopCoroutine(SlideOptions(isOptionsMenuDeployed)); // This is bugged
+        if(lerpCorout != null) StopCoroutine(lerpCorout); // This is bugged
         
         if (isOptionsMenuDeployed)
         {
             isOptionsMenuDeployed = false;
-            StartCoroutine(SlideOptions(false));
+            lerpCorout = StartCoroutine(SlideOptions(false));
         }
         else
         {
             isOptionsMenuDeployed = true;
-            StartCoroutine(SlideOptions(true));
+            lerpCorout = StartCoroutine(SlideOptions(true));
         }
     }
 

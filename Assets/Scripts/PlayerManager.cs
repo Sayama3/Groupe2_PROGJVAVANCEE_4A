@@ -104,4 +104,9 @@ public class PlayerManager : MonoBehaviour
 
 		return results;
 	}
+
+	public static void Init()
+	{
+		Instance.InitSelf();
+	}
 }
