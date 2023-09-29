@@ -52,21 +52,9 @@ public class MCTSPlayerController : APlayerController
     {
         int playerIndex = PlayerManager.Instance.players.IndexOf(this);
 
-        // var actions = MCTSHelper.GenerateAllPossibleRandomPlayerAction(dt, copyGame, Position);
-        // MCTSNode[] tests = new MCTSNode[MCTSHelper.NumberOfTests];
-        // for (int i = 0; i < tests.Length; i++)
-        // {
-        //     tests[i] = new MCTSNode(new Game(copyGame), PlayerManager.Instance.players.Select(p => (Vector2?)p.Position).ToArray(), playerIndex, playerIndex, actions);
-        //     tests[i].Simulate(MCTSHelper.NumberOfSimulations, MCTSHelper.SimulationDeltaTime);
-        //     //TODO: backpropagate.
-        // }
-        //
-        // //TODO: choose the better one.
-        //
-        // return new PlayerUpdateResult() { HasDropBomb = false, Position = Position };
         var rootNode = new MCTSNode(new Game(copyGame), PlayerManager.Instance.players.Select(p => p != null ? (Vector2?)p.Position : (Vector2?)null).ToArray(), playerIndex);
         Assert.IsTrue(rootNode.IsLeaf(), "rootNode.IsLeaf()");
-        List<MCTSNode> leafs = new List<MCTSNode>(4096) {rootNode};
+        List<MCTSNode> leafs = new List<MCTSNode>(MCTSHelper.NumberOfTests + 1) {rootNode};
         
         for (int i = 0; i < MCTSHelper.NumberOfTests; i++)
         {

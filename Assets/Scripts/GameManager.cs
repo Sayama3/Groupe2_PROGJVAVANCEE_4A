@@ -78,6 +78,8 @@ public class GameManager : SerializedMonoBehaviour
     {
         game = new Game(gameparameters);
         game.Fill(CellStates.Wall);
+        // game.Fill(CellStates.None);
+        // game.FillGrid(CellStates.Wall);
         SetupPlayers();
         gameIsOn = true;
         OnGameStart?.Invoke();
@@ -103,8 +105,6 @@ public class GameManager : SerializedMonoBehaviour
             game.GetGameBoard().SetCell(randomX+1, randomY-1, CellStates.None);
             game.GetGameBoard().SetCell(randomX-1, randomY+1, CellStates.None);
         }
-        // TODO: Add player position ?
-        // TODO: Add empty spots around player
     }
 
     public Game GetCurrentGame()

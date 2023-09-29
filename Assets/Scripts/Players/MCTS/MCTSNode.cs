@@ -193,21 +193,6 @@ public class MCTSNode
 		return (WinScore-LooseScore) / (float) ExplorationCount;
 	}
 
-	private bool AnyNewPlayerIsDead()
-	{
-		return players.Any(p => p != null && game.PositionHasExploded(p.Value));
-	}
-
-	private bool?[] GetListDeadPlayer()
-	{
-		return players.Select(p => p.HasValue ? (bool?)game.PositionHasExploded(p.Value) : (bool?)null).ToArray();
-	}
-
-	private bool CurrentPlayerDead()
-	{
-		return players[currentPlayer] == null || game.PositionHasExploded(players[currentPlayer].Value);
-	}
-
 	public bool IsLeaf()
 	{
 		foreach (var child in childrens)
