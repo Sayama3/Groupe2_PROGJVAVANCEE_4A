@@ -1907,7 +1907,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: -37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &477545230
 MonoBehaviour:
@@ -7161,7 +7161,7 @@ MonoBehaviour:
   - {fileID: 1770929356}
   audioMixer: {fileID: 24100000, guid: c79a20f473d50d14784031367760c565, type: 2}
   resolutionDropdown: {fileID: 38252943}
-  fullScreenToggle: {fileID: 0}
+  fullScreenToggle: {fileID: 1494725849}
   optionsMenu: {fileID: 1774992522}
   optionsMenuDeployed: {fileID: 88908143}
   optionsDeploySpeed: 5
@@ -7906,7 +7906,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 40, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1643557440
 MonoBehaviour:

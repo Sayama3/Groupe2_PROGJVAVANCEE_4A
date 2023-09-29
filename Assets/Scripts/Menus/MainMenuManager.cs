@@ -7,13 +7,7 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum PlayerType
-{
-    None,
-    Human,
-    Random,
-    MCTS
-}
+public enum PlayerType { None, Human, Random, MCTS }
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -167,10 +161,12 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("Fullscreen") >= 1)
             {
                 fullscreen = FullScreenMode.ExclusiveFullScreen;
+                fullScreenToggle.isOn = true;
             }
             else
             {
                 fullscreen = FullScreenMode.Windowed;
+                fullScreenToggle.isOn = false;
             }
         }
         else
