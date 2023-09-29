@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class Helpers
 {
@@ -14,5 +15,11 @@ public static class Helpers
 	{
 		int index = UnityEngine.Random.Range(0, list.Count);
 		return list[index];
+	}
+
+	public static T GetRandom<T>(this IEnumerable<T> list)
+	{
+		int index = UnityEngine.Random.Range(0, list.Count());
+		return list.ElementAt(index);
 	}
 }

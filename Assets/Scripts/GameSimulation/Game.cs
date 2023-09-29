@@ -234,6 +234,20 @@ public class Game
 		return _gameBoard.GetCell(Round(position));
 	}
 
+	public void UpdatePlayer(PlayerUpdateResult? result)
+	{
+		if (result == null) return;	
+		if (result.Value.HasDropBomb)
+		{
+			var pos = result.Value.Position;
+			Vector2Int position = Game.Round(pos);
+			var cell = GetGameBoard().GetCell(position.x, position.y);
+			if (cell == CellStates.None)
+			{
+				GetGameBoard().SetCell(position, CellStates.Bomb);
+			}
+		}
+	}
 	public void UpdatePlayers(PlayerUpdateResult?[] results)
 	{
 		for (int i = 0; i < results.Length; i++)
