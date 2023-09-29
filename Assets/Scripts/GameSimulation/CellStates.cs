@@ -6,13 +6,3 @@ public enum CellStates
 	Bomb,
 	Wall,
 }
-
-public static class CellStatesHelper
-{
-	public static CellStates GetRandomCellStates()
-	{
-		var values = Enum.GetValues(typeof(CellStates));
-		int index = UnityEngine.Random.Range(0, values.Length);
-		return (CellStates)values.GetValue(index);
-	}
-}

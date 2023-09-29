@@ -1,8 +1,6 @@
-﻿using System;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 
 public class GameRenderer : MonoBehaviour
 {
@@ -17,7 +15,9 @@ public class GameRenderer : MonoBehaviour
 	private CellObject[] renderBoard;
 	private GameObject[] players;
 	private Animator[] animators;
+	private static readonly int Walking = Animator.StringToHash("Walking");
 	private bool needToInit = true;
+
 	private void Start()
 	{
 		GameManager.Instance.OnGameStart += StartEverything;
@@ -39,32 +39,8 @@ public class GameRenderer : MonoBehaviour
 
 	private void StartEverything()
 	{
-		// DestroyPreviousBoard();
 		InitBoard();
 		InitPlayer();
-	}
-
-	private void DestroyPreviousBoard()
-	{
-		if(renderBoard is { Length: > 0 })
-		{
-			for (int i = renderBoard.Length - 1; i >= 0; i--)
-			{
-				if(renderBoard[i] == null) continue;
-				Destroy(renderBoard[i].gameObject);
-				renderBoard[i] = null;
-			}
-		}
-
-		if (players is { Length: > 0 })
-		{
-			for (int i = players.Length - 1; i >= 0; i--)
-			{
-				if(players[i] == null) continue;
-				Destroy(players[i].gameObject);
-				players[i] = null;
-			}
-		}
 	}
 	
 	private void InitBoard()
@@ -173,12 +149,12 @@ public class GameRenderer : MonoBehaviour
 
 			if (!(player.LastPosition == player.Position))
 			{
-				animators[i].SetBool("Walking", true);
+				animators[i].SetBool(Walking, true);
 				playerTransform.forward = position - lastPosition;
 			}
 			else
 			{
-				animators[i].SetBool("Walking", false);
+				animators[i].SetBool(Walking, false);
 			}
 		}
 	}

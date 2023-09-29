@@ -1,7 +1,4 @@
 ﻿using System;
-using UnityEngine;
-
-
 
 [Flags]
 public enum MCTSAction
@@ -12,10 +9,4 @@ public enum MCTSAction
 	MoveDown = 1 << 3,
 	MoveLeft = 1 << 4,
 	Bomb = 1 << 5,
-}
-public struct MCTSPlayerAction
-{
-	public GameActions GameAction;
-	public Vector2 Position;
-	public bool HasDropBomb;
 }

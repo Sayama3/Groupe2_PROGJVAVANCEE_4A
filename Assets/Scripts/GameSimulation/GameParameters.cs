@@ -7,17 +7,17 @@ public struct GameParameters: IGameParameters
 {
 	public GameParameters(int width, int height)
 	{
-		this.Width = width;
-		this.Height = height;
-		this.Speed = 1;
-		this.BombRadius = 2;
-		this.BombTimer = 1.5f;
-		this.BombExplosionTimer = 1.5f;
-		this.NumberOfTests = 4;
-		this.SimulationDeltaTime = 0.1f;
-		this.ExploreMinThreshold = 0.05f;
-		this.ExploreMaxThreshold = 0.5f;
-		this.NumberOfSimulations = 50;
+		Width = width;
+		Height = height;
+		Speed = 1;
+		BombRadius = 2;
+		BombTimer = 1.5f;
+		BombExplosionTimer = 1.5f;
+		NumberOfTests = 4;
+		SimulationDeltaTime = 0.1f;
+		ExploreMinThreshold = 0.05f;
+		ExploreMaxThreshold = 0.5f;
+		NumberOfSimulations = 50;
 	}
 	[OdinSerialize, ShowInInspector, MinValue(1), HorizontalGroup("GameSize")]
 	public int Width {get; set;}

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -91,19 +89,6 @@ public class PlayerManager : MonoBehaviour
 			players.Add(new RandomPlayerController(randomPrefab));
 		}
 	}
-
-	// public PlayerUpdateResult[] UpdatePlayers(float dt, ref Game currentGame)
-	// {
-	// 	PlayerUpdateResult[] results = new PlayerUpdateResult[players.Count];
-	// 	for (int i = 0; i < players.Count; i++)
-	// 	{
-	// 		var copy = new Game(currentGame);
-	// 		IPlayerController player = players[i];
-	// 		results[i] = player.Update(dt, currentGame);
-	// 	}
-	//
-	// 	return results;
-	// }
 
 	public static void Init()
 	{

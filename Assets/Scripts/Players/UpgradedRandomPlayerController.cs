@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UpgradedRandomPlayerController : APlayerController
@@ -7,7 +6,7 @@ public class UpgradedRandomPlayerController : APlayerController
     private Vector2? target = null;
     public UpgradedRandomPlayerController(GameObject prefab)
     {
-        this.PrefabSource = prefab;
+        PrefabSource = prefab;
     }
 
     public override PlayerUpdateResult Update(float dt, Game copyGame)

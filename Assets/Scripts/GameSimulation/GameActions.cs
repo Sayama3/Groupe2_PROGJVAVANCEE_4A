@@ -1,6 +1,4 @@
-﻿using System;
-
-public enum GameActions
+﻿public enum GameActions
 {
 	None = 0,
 	Move,

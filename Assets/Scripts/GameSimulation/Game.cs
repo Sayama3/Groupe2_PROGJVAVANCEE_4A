@@ -12,12 +12,12 @@ public class Game
 
 	public Game(IGameParameters parameters)
 	{
-		this._gameBoard = new GameBoard(parameters);
+		_gameBoard = new GameBoard(parameters);
 	}
 
 	public Game(Game game)
 	{
-		this._gameBoard = new GameBoard(game._gameBoard);
+		_gameBoard = new GameBoard(game._gameBoard);
 	}
 
 	public void Fill(CellStates cell)
@@ -46,7 +46,6 @@ public class Game
 	
 	public int Width => _gameBoard.Width;
 	public int Height => _gameBoard.Height;
-	public int Count => _gameBoard.Count;
 
 	public void Update(float dt)
 	{

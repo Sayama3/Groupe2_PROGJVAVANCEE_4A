@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -91,20 +89,16 @@ public class SimulationSimulator : MonoBehaviour
         {
             var player = players[0].Value;
             Vector3 position = new Vector3(player.x, 0, player.y);
-            // Quaternion rotation = player.;
             playerInstanceOne = Instantiate(playerOne, boardParent, false);
             var playerTransform = playerInstanceOne.transform;
             playerTransform.localPosition = position;
-            // playerTransform.localRotation = rotation;
         }
         {
             var player = players[1].Value;
             Vector3 position = new Vector3(player.x, 0, player.y);
-            // Quaternion rotation = player.;
             playerInstanceTwo = Instantiate(playerTwo, boardParent, false);
             var playerTransform = playerInstanceTwo.transform;
             playerTransform.localPosition = position;
-            // playerTransform.localRotation = rotation;
         }
     }
     private void UpdateBoard()
@@ -112,7 +106,7 @@ public class SimulationSimulator : MonoBehaviour
         var board = copyGame.GetGameBoard();
         var w = board.Width;
         var h = board.Height;
-        //Update board.
+        //Update board
         for (int x = 0; x < w; x++)
         {
             for (int y = 0; y < h; y++)
@@ -135,8 +129,7 @@ public class SimulationSimulator : MonoBehaviour
             playerInstanceTwo.transform.localPosition = position;
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

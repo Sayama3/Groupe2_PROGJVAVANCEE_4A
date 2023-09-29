@@ -91,7 +91,6 @@ public class MCTSNode
 	{
 		var copyGame = new Game(game);
 		Vector2?[] players = (Vector2?[])this.players.Clone();
-		int currentPlayerTurn = playerTurn;
 		float dt = MCTSHelper.SimulationDeltaTime;
 		PlayerUpdateResult?[] results = new PlayerUpdateResult?[PlayerCount];
 
@@ -150,41 +149,14 @@ public class MCTSNode
 
 	private void RecurseAddScore(float win, float loose)
 	{
-		this.WinScore += win;
-		this.LooseScore += loose;
+		WinScore += win;
+		LooseScore += loose;
 		ExplorationCount += 1;
-		this.Score = GetScore();
+		Score = GetScore();
 		if(parent != null) parent.RecurseAddScore(win, loose);
 	}
 
 	public float Score { get; private set; }
-
-	private MCTSNode Explore()
-	{
-		return childrens.Where(c => c.Value != null && c.Value.IsLeaf()).Select(c => c.Value).GetRandom();
-	}
-
-	private MCTSNode Exploit()
-	{
-		var filteredChildren = childrens.Where(c => c.Value != null && c.Value.IsLeaf());
-		MCTSNode best = null;
-		foreach (var valuePair in filteredChildren)
-		{
-			if (best == null)
-			{
-				best = valuePair.Value;
-			}
-			else
-			{
-				if (valuePair.Value.GetScore() > best.GetScore())
-				{
-					best = valuePair.Value;
-				}
-			}
-		}
-
-		return best;
-	}
 
 	public float GetScore()
 	{

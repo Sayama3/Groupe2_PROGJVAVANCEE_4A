@@ -26,22 +26,6 @@ public static class MCTSHelper
 
 		return actions;
 	}
-
-	public static MCTSPlayerAction DoRandomAction(this MCTSAction action, Vector2 position, float dt)
-	{
-		MCTSAction randomAction = ChooseRandomAction(action);
-
-		return randomAction switch
-		{
-			MCTSAction.None => new MCTSPlayerAction {GameAction = GameActions.None, Position = position, HasDropBomb = false},
-			MCTSAction.MoveUp => new MCTSPlayerAction {GameAction = GameActions.Move, Position = position + GetDirection(MCTSAction.MoveUp) * dt, HasDropBomb = false},
-			MCTSAction.MoveRight => new MCTSPlayerAction {GameAction = GameActions.Move, Position = position + GetDirection(MCTSAction.MoveRight) * dt, HasDropBomb = false},
-			MCTSAction.MoveDown => new MCTSPlayerAction {GameAction = GameActions.Move, Position = position + GetDirection(MCTSAction.MoveDown) * dt, HasDropBomb = false},
-			MCTSAction.MoveLeft => new MCTSPlayerAction {GameAction = GameActions.Move, Position = position + GetDirection(MCTSAction.MoveLeft) * dt, HasDropBomb = false},
-			MCTSAction.Bomb => new MCTSPlayerAction {GameAction = GameActions.Bomb, Position = position, HasDropBomb = true},
-			_ => throw new ArgumentOutOfRangeException()
-		};
-	}
 	public static MCTSAction ChooseRandomAction(this MCTSAction action)
 	{
 		List<MCTSAction> actions = new List<MCTSAction>(6);
@@ -53,20 +37,6 @@ public static class MCTSHelper
 		if(action.HasFlag(MCTSAction.Bomb)) actions.Add(MCTSAction.Bomb);
 
 		return actions.GetRandom();
-	}
-
-	public static Vector2 GetDirection(this MCTSAction action)
-	{
-		return action switch
-		{
-			MCTSAction.None => Vector2.zero,
-			MCTSAction.MoveUp => Vector2.up,
-			MCTSAction.MoveRight => Vector2.right,
-			MCTSAction.MoveDown => Vector2.down,
-			MCTSAction.MoveLeft => Vector2.left,
-			MCTSAction.Bomb => Vector2.zero,
-			_ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
-		};
 	}
 
 	public static PlayerUpdateResult GetPlayerUpdateResult(this MCTSAction action, Vector2 player, float dt)

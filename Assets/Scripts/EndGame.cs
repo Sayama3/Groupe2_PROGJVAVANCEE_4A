@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EndGame : MonoBehaviour
 {
@@ -35,7 +31,7 @@ public class EndGame : MonoBehaviour
         GameManager.Instance.OnPlayerWin -= PlayerWin;
     }
 
-    public void GameEnded()
+    private void GameEnded()
     {
         EndGameObject.SetActive(true);
         if (EndGameText != null)

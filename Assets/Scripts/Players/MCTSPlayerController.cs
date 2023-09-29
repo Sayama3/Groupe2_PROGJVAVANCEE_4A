@@ -1,18 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Random = UnityEngine.Random;
-
-
 
 public class MCTSPlayerController : APlayerController
 {
 
     public MCTSPlayerController(GameObject prefab)
     {
-        this.PrefabSource = prefab;
+        PrefabSource = prefab;
     }
 
     private float researchValue;
@@ -20,7 +16,7 @@ public class MCTSPlayerController : APlayerController
     private MCTSNode Select(ref List<MCTSNode> nodes)
     {
         Assert.IsTrue(nodes.TrueForAll(l => l.IsLeaf()), "leafs.TrueForAll(l => l.IsLeaf())");
-        float value = UnityEngine.Random.value;
+        float value = Random.value;
         if (value > ((MCTSHelper.ExploreMaxThreshold-MCTSHelper.ExploreMinThreshold) * researchValue) + MCTSHelper.ExploreMinThreshold)
         {
             return Exploit(ref nodes);

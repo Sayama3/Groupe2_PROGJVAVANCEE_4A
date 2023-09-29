@@ -1,5 +1,4 @@
-﻿using System;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using Sirenix.Serialization;
 
@@ -9,11 +8,6 @@ public class ScriptableGameParameters : SerializedScriptableObject, IGameParamet
 {
 	[OdinSerialize, ShowInInspector, InlineProperty, HideLabel]
 	private GameParameters _defaultParameters = new GameParameters(15, 15);
-
-	public GameParameters GetParameters()
-	{
-		return _defaultParameters;
-	}
 
 	public int Width => _defaultParameters.Width;
 	public int Height => _defaultParameters.Height;

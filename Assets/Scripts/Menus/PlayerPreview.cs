@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ public class PlayerPreview : MonoBehaviour
         dropdown.onValueChanged.AddListener(delegate { ShowPlayer();});
     }
 
-    public void ShowPlayer()
+    private void ShowPlayer()
     {
         foreach (GameObject gameObject in players)
         {

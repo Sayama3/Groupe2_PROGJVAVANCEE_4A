@@ -78,8 +78,6 @@ public class GameManager : SerializedMonoBehaviour
     {
         game = new Game(gameparameters);
         game.Fill(CellStates.Wall);
-        // game.Fill(CellStates.None);
-        // game.FillGrid(CellStates.Wall);
         SetupPlayers();
         gameIsOn = true;
         OnGameStart?.Invoke();

@@ -108,11 +108,6 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
-    {
-        audioMixer.SetFloat("Volume", volume);
-    }
-
     public void SetResolution()
     {
         currentResolutionIndex = resolutionDropdown.value;
@@ -169,10 +164,5 @@ public class MainMenuManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Resolution")) currentResolutionIndex = PlayerPrefs.GetInt("Resolution");
         else currentResolutionIndex = Screen.resolutions.Length;
-    }
-
-    [Button]
-    private void ClearPrefs()
-    {
     }
 }

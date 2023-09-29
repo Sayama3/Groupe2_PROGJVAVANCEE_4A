@@ -7,8 +7,6 @@ using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-//TODO: We should have two array of timer one for the explosion and one for the case exploding.
-
 [Serializable]
 public class GameBoard : IReadOnlyList<CellStates>
 {
@@ -25,36 +23,36 @@ public class GameBoard : IReadOnlyList<CellStates>
 
 	public GameBoard(GameBoard board)
 	{
-		this.gameParameters = board.gameParameters;
-		this.gameboard = new CellStates[board.gameboard.Length];
+		gameParameters = board.gameParameters;
+		gameboard = new CellStates[board.gameboard.Length];
 		for (int i = 0; i < board.gameboard.Length; i++)
 		{
-			this.gameboard[i] = board.gameboard[i];
+			gameboard[i] = board.gameboard[i];
 		}
-		this.bombTimers = new float?[board.bombTimers.Length];
+		bombTimers = new float?[board.bombTimers.Length];
 		for (int i = 0; i < board.bombTimers.Length; i++)
 		{
-			this.bombTimers[i] = board.bombTimers[i];
+			bombTimers[i] = board.bombTimers[i];
 		}
-		this.bombIndexes = new List<int>(board.bombIndexes.Count);
+		bombIndexes = new List<int>(board.bombIndexes.Count);
 		for (int i = 0; i < board.bombIndexes.Count; i++)
 		{
-			this.bombIndexes.Add(board.bombIndexes[i]);
+			bombIndexes.Add(board.bombIndexes[i]);
 		}
-		this.explodedBombIndexes = new List<int>(board.explodedBombIndexes.Count);
+		explodedBombIndexes = new List<int>(board.explodedBombIndexes.Count);
 		for (int i = 0; i < board.explodedBombIndexes.Count; i++)
 		{
-			this.explodedBombIndexes.Add(board.explodedBombIndexes[i]);
+			explodedBombIndexes.Add(board.explodedBombIndexes[i]);
 		}
 	}
 
 	public GameBoard(IGameParameters parameters)
 	{
-		this.gameParameters = parameters;
-		this.gameboard = new CellStates[parameters.Width * parameters.Height];
-        this.bombTimers = new float?[parameters.Width * parameters.Height];
-		this.bombIndexes = new List<int>(2);
-		this.explodedBombIndexes = new List<int>(2);
+		gameParameters = parameters;
+		gameboard = new CellStates[parameters.Width * parameters.Height];
+        bombTimers = new float?[parameters.Width * parameters.Height];
+		bombIndexes = new List<int>(2);
+		explodedBombIndexes = new List<int>(2);
 	}
 
 	private void ExplodeCell(Vector2Int pos)
