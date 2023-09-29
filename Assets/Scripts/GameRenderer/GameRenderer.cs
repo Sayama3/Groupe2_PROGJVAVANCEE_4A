@@ -65,7 +65,7 @@ public class GameRenderer : MonoBehaviour
 			}
 		}
 	}
-
+	
 	private void InitBoard()
 	{
 		currentGameBoard = game.GetCopyGameBoard();
@@ -78,7 +78,6 @@ public class GameRenderer : MonoBehaviour
 			for (int y = 0; y < h; y++)
 			{
 				Vector3 position = new Vector3(x, 0, y);
-				var cell = currentGameBoard.GetCell(x, y);
 				var instance = Instantiate(CellObject, boardParent, false);
 				renderBoard[x + y * w] = instance;
 				instance.transform.localPosition = position;
