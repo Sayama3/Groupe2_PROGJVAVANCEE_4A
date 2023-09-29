@@ -142,6 +142,7 @@ public class GameManager : SerializedMonoBehaviour
                 }
             }
         }
+        game.UpdatePlayers(results);
     }
     
     public PlayerUpdateResult?[] UpdatePlayers(float dt, ref Game currentGame)

@@ -44,10 +44,16 @@ MonoBehaviour:
       Data: 1.5
     - Name: NumberOfTests
       Entry: 3
-      Data: 4
-    - Name: NumberOfSimulations
+      Data: 100
+    - Name: SimulationDeltaTime
+      Entry: 4
+      Data: 1.5
+    - Name: ExploreThreshold
+      Entry: 4
+      Data: 0.8
+    - Name: NumberOfFramePerSimulation
       Entry: 3
-      Data: 8
+      Data: 100
     - Name: 
       Entry: 8
       Data: 

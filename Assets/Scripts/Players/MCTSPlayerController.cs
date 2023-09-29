@@ -1,21 +1,100 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
+
+
 
 public class MCTSPlayerController : APlayerController
 {
-    private const int numberOfTests = 4;
-    private const int numberOfSimulations = 8;
 
     public MCTSPlayerController(GameObject prefab)
     {
         this.PrefabSource = prefab;
     }
+
+    private MCTSNode Select(ref List<MCTSNode> nodes)
+    {
+        Assert.IsTrue(nodes.TrueForAll(l => l.IsLeaf()), "leafs.TrueForAll(l => l.IsLeaf())");
+        float value = UnityEngine.Random.value;
+        if (value > MCTSHelper.ExploreThreshold)
+        {
+            return Exploit(ref nodes);
+        }
+        else
+        {
+            return Explore(ref nodes);
+        }
+    }
+    
+    
+    private MCTSNode Explore(ref List<MCTSNode> nodes)
+    {
+        return nodes.GetRandom();
+    }
+
+    private MCTSNode Exploit(ref List<MCTSNode> nodes)
+    {
+        int best = 0;
+
+        for (int i = 1; i < nodes.Count; i++)
+        {
+            if (nodes[i].GetScore() > nodes[best].GetScore())
+            {
+                best = i;
+            }
+        }
+
+        return nodes[best];
+    }
     
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
-        return new PlayerUpdateResult() { HasDropBomb = false, Position = Position };
+        int playerIndex = PlayerManager.Instance.players.IndexOf(this);
+
+        // var actions = MCTSHelper.GenerateAllPossibleRandomPlayerAction(dt, copyGame, Position);
+        // MCTSNode[] tests = new MCTSNode[MCTSHelper.NumberOfTests];
+        // for (int i = 0; i < tests.Length; i++)
+        // {
+        //     tests[i] = new MCTSNode(new Game(copyGame), PlayerManager.Instance.players.Select(p => (Vector2?)p.Position).ToArray(), playerIndex, playerIndex, actions);
+        //     tests[i].Simulate(MCTSHelper.NumberOfSimulations, MCTSHelper.SimulationDeltaTime);
+        //     //TODO: backpropagate.
+        // }
+        //
+        // //TODO: choose the better one.
+        //
+        // return new PlayerUpdateResult() { HasDropBomb = false, Position = Position };
+        var rootNode = new MCTSNode(new Game(copyGame), PlayerManager.Instance.players.Select(p => p != null ? (Vector2?)p.Position : (Vector2?)null).ToArray(), playerIndex);
+        Assert.IsTrue(rootNode.IsLeaf(), "rootNode.IsLeaf()");
+        List<MCTSNode> leafs = new List<MCTSNode>(4096) {rootNode};
+        
+        for (int i = 0; i < MCTSHelper.NumberOfTests; i++)
+        {
+            var selected = Select(ref leafs);
+            Assert.IsTrue(selected.IsLeaf());
+            var newNode = selected.ExpandAction();
+            newNode.SimulateAction();
+            newNode.Backpropagate();
+            CheckNodes(ref leafs, ref newNode);
+        }
+
+        return rootNode.GetBestAction().GetPlayerUpdateResult(Position, dt);
     }
 
+    private void CheckNodes(ref List<MCTSNode> leafs, ref MCTSNode newNode)
+    {
+        if (newNode.IsLeaf())
+        {
+            leafs.Add(newNode);
+        }
+
+        ref MCTSNode parent = ref newNode.parent;
+        if (!parent.IsLeaf())
+        {
+            leafs.Remove(parent);
+        }
+        Assert.IsTrue(leafs.TrueForAll(l => l.IsLeaf()), "leafs.TrueForAll(l => l.IsLeaf())");
+    }
 }

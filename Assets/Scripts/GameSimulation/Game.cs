@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -59,12 +60,22 @@ public class Game
 		return PositionHasExploded(x, z);
 	}
 
+	public bool PositionHasExploded(Vector2 position)
+	{
+		return PositionHasExploded(Round(position));
+	}
+
+	public bool PositionHasExploded(Vector2Int position)
+	{
+		return _gameBoard.PositionHasExploded(position.x, position.y);
+	}
+
 	public bool PositionHasExploded(int positionX, int positionZ)
 	{
 		return _gameBoard.PositionHasExploded(positionX, positionZ);
 	}
 
-	public Vector2Int[] GetPossibleDirection(Vector2 position)
+	public Vector2Int[] GetPossiblePositions(Vector2 position)
 	{
 		List<Vector2Int> possibleMove = new List<Vector2Int>(5);
 		int x = Round(position.x);
@@ -216,5 +227,42 @@ public class Game
 	public static Vector2Int Round(Vector2 input)
 	{
 		return new Vector2Int(Round(input.x), Round(input.y));
+	}
+
+	public CellStates GetCell(Vector2 position)
+	{
+		return _gameBoard.GetCell(Round(position));
+	}
+
+	public void UpdatePlayer(PlayerUpdateResult? result)
+	{
+		if (result == null) return;	
+		if (result.Value.HasDropBomb)
+		{
+			var pos = result.Value.Position;
+			Vector2Int position = Game.Round(pos);
+			var cell = GetGameBoard().GetCell(position.x, position.y);
+			if (cell == CellStates.None)
+			{
+				GetGameBoard().SetCell(position, CellStates.Bomb);
+			}
+		}
+	}
+	public void UpdatePlayers(PlayerUpdateResult?[] results)
+	{
+		for (int i = 0; i < results.Length; i++)
+		{
+			if (results[i] == null) continue;	
+			if (results[i].Value.HasDropBomb)
+			{
+				var pos = results[i].Value.Position;
+				Vector2Int position = Game.Round(pos);
+				var cell = GetGameBoard().GetCell(position.x, position.y);
+				if (cell == CellStates.None)
+				{
+					GetGameBoard().SetCell(position, CellStates.Bomb);
+				}
+			}
+		}
 	}
 }

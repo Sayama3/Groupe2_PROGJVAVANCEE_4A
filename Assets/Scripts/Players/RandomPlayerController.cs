@@ -24,7 +24,7 @@ public class RandomPlayerController : APlayerController
     //             }
     //             case GameActions.Move:
     //             {
-    //                 Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
+    //                 Vector2Int direction = copyGame.GetPossiblePositions(Position).GetRandom();
     //                 target = direction;
     //             }
     //                 break;
@@ -57,7 +57,7 @@ public class RandomPlayerController : APlayerController
             }
             case GameActions.Move:
             {
-                Vector2Int direction = copyGame.GetPossibleDirection(Position).GetRandom();
+                Vector2Int direction = copyGame.GetPossiblePositions(Position).GetRandom();
                 target = direction;
             }
                 break;

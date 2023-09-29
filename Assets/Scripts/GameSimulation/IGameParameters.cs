@@ -7,5 +7,7 @@
 	public float BombTimer { get; }
 	public float BombExplosionTimer { get; }
 	public int NumberOfTests { get; }
-	public int NumberOfSimulations { get; }
+	public float SimulationDeltaTime { get; }
+	public float ExploreThreshold { get; }
+	public int NumberOfFramePerSimulation { get; }
 }
