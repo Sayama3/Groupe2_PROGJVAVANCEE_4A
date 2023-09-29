@@ -59,7 +59,6 @@ public class RandomPlayerController : APlayerController
             {
                 Vector2Int direction = copyGame.GetPossiblePositions(Position).GetRandom();
                 target = direction;
-                Forward = new Vector3(direction.x, 0, direction.y);
             }
                 break;
             case GameActions.Bomb:

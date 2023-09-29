@@ -156,6 +156,8 @@ public class GameManager : SerializedMonoBehaviour
                 continue;
             }
             var copy = new Game(currentGame);
+
+            players[i].LastPosition = players[i].Position;
             results[i] = players[i].Update(dt, currentGame);
         }
 

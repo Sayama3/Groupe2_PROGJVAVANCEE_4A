@@ -33,22 +33,18 @@ public class HumanPlayerController : APlayerController
             if (verticalInput > 0 && possibleActions[1])
             {
                 position.y += speed * dt;
-                Forward = Vector3.forward;
             }
             else if (horizontalInput > 0 && possibleActions[2])
             {
                 position.x += speed * dt;
-                Forward = Vector3.right;
             }
             else if (verticalInput < 0 && possibleActions[3])
             {
                 position.y -= speed * dt;
-                Forward = -Vector3.forward;
             }
             else if (horizontalInput < 0 && possibleActions[4])
             {
                 position.x -= speed * dt;
-                Forward = -Vector3.right;
             }
         }
 

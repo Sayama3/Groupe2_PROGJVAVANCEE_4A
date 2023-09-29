@@ -98,7 +98,6 @@ public class GameRenderer : MonoBehaviour
 			players[i] = Instantiate(src, boardParent, false);
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.forward = player.Forward;
 		}
 	}
 
@@ -148,7 +147,7 @@ public class GameRenderer : MonoBehaviour
 
 	private void UpdatePlayers()
 	{
-		//Update Player positino and rotation.
+		//Update Player position and rotation.
 		var gamePlayers = GameManager.Instance.GetPlayers();
 		Assert.AreEqual(gamePlayers.Length, players.Length);
 		for (int i = 0; i < players.Length; i++)
@@ -163,11 +162,17 @@ public class GameRenderer : MonoBehaviour
 				continue;
 			}
 			var player = gamePlayers[i];
+			
+			Vector3 lastPosition = new Vector3(player.LastPosition.x, 0, player.LastPosition.y);
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
 
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.forward = player.Forward;
+
+			if (!(player.LastPosition == player.Position))
+			{
+				playerTransform.forward = position - lastPosition;
+			}
 		}
 	}
 
