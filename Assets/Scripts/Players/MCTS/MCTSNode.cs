@@ -126,7 +126,9 @@ public class MCTSNode
 					gameEnd |= players.Count(p => !p.HasValue) >= PlayerCount - 1;
 				}
 			}
-			
+
+			gameEnd |= !players[currentPlayer].HasValue;
+
 		}
 
 		if (!players[currentPlayer].HasValue)
