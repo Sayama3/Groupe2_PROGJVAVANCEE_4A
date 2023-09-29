@@ -22,6 +22,9 @@ public class ScriptableGameParameters : SerializedScriptableObject, IGameParamet
 	public float BombTimer => _defaultParameters.BombTimer;
 	public float BombExplosionTimer => _defaultParameters.BombExplosionTimer;
 	public int NumberOfTests => _defaultParameters.NumberOfTests;
+	public float SimulationDeltaTime => _defaultParameters.SimulationDeltaTime;
 
-	public int NumberOfSimulations => _defaultParameters.NumberOfSimulations;
+	public float ExploreThreshold => _defaultParameters.ExploreThreshold;
+
+	public int NumberOfFramePerSimulation => _defaultParameters.NumberOfFramePerSimulation;
 }

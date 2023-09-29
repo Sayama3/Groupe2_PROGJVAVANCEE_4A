@@ -79,7 +79,7 @@ public class PlayerManager : MonoBehaviour
 						players.Add(new RandomPlayerController(randomPrefab));
 						break;
 					case PlayerType.MCTS:
-						players.Add(new RandomPlayerController(iaPrefab));
+						players.Add(new MCTSPlayerController(iaPrefab));
 						break;
 				}
 			}

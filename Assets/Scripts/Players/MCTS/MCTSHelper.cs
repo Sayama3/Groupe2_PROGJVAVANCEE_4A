@@ -5,24 +5,23 @@ using UnityEngine;
 public static class MCTSHelper
 {
 	public static int NumberOfTests => GameManager.Instance.GetCurrentGameParams().NumberOfTests;
-	public static int NumberOfSimulations => GameManager.Instance.GetCurrentGameParams().NumberOfSimulations;
 	public static float PlayerSpeed => GameManager.Instance.GetCurrentGameParams().Speed;
-	public static float SimulationDeltaTime => 0.1f;
-	public static float ExploreThreshold => 0.8f;
-	public static int NumberOfFramePerSimulation => 50;
+	public static float SimulationDeltaTime => GameManager.Instance.GetCurrentGameParams().SimulationDeltaTime;
+	public static float ExploreThreshold => GameManager.Instance.GetCurrentGameParams().ExploreThreshold;
+	public static int NumberOfFramePerSimulation => GameManager.Instance.GetCurrentGameParams().NumberOfFramePerSimulation;
 	public static MCTSAction GenerateAllPossibleRandomPlayerAction(this Game game, Vector2 position)
 	{
 		MCTSAction actions = MCTSAction.None;
 
 		// Movement Actions
 		var directions = game.GetPossibleActions(position);
-		if (directions[1]) actions &= MCTSAction.MoveUp;
-		if (directions[2]) actions &= MCTSAction.MoveRight;
-		if (directions[3]) actions &= MCTSAction.MoveDown;
-		if (directions[4]) actions &= MCTSAction.MoveLeft;
+		if (directions[1]) actions |= MCTSAction.MoveUp;
+		if (directions[2]) actions |= MCTSAction.MoveRight;
+		if (directions[3]) actions |= MCTSAction.MoveDown;
+		if (directions[4]) actions |= MCTSAction.MoveLeft;
 
 		// Bomb Action
-		if (game.GetCell(position) == CellStates.None) actions &= MCTSAction.Bomb;
+		if (game.GetCell(position) == CellStates.None) actions |= MCTSAction.Bomb;
 
 		return actions;
 	}

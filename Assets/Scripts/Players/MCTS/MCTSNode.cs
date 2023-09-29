@@ -14,6 +14,18 @@ public class MCTSNode
 		this.playerTurn = currentPlayer;
         Assert.IsTrue(players[currentPlayer].HasValue);
         this.turnCount = turnCount;
+        childrens = new ();
+
+		Assert.IsTrue(players[playerTurn].HasValue, "players[playerTurn].HasValue");
+		Assert.IsTrue(players[currentPlayer].HasValue);
+
+		var actions = game.GenerateAllPossibleRandomPlayerAction(players[currentPlayer].Value);
+		if(actions.HasFlag(MCTSAction.None)) childrens.Add((currentPlayer, MCTSAction.None), null);
+		if(actions.HasFlag(MCTSAction.Bomb)) childrens.Add((currentPlayer, MCTSAction.Bomb), null);
+		if(actions.HasFlag(MCTSAction.MoveUp)) childrens.Add((currentPlayer, MCTSAction.MoveUp), null);
+		if(actions.HasFlag(MCTSAction.MoveRight)) childrens.Add((currentPlayer, MCTSAction.MoveRight), null);
+		if(actions.HasFlag(MCTSAction.MoveDown)) childrens.Add((currentPlayer, MCTSAction.MoveDown), null);
+		if(actions.HasFlag(MCTSAction.MoveLeft)) childrens.Add((currentPlayer, MCTSAction.MoveLeft), null);	
 	}
 
 	public MCTSNode(Game copyGame, Vector2?[] players, int currentPlayer, int playerTurn, MCTSAction action, MCTSNode parent, int turnCount) {
@@ -25,6 +37,7 @@ public class MCTSNode
 		this.playerTurn = playerTurn;
 		this.parent = parent;
         this.turnCount = turnCount;
+        childrens = new ();
 
 		Assert.IsTrue(players[playerTurn].HasValue, "players[playerTurn].HasValue");
         Assert.IsTrue(players[currentPlayer].HasValue);
@@ -45,7 +58,6 @@ public class MCTSNode
 			if(actions.HasFlag(MCTSAction.MoveDown)) childrens.Add((i, MCTSAction.MoveDown), null);
 			if(actions.HasFlag(MCTSAction.MoveLeft)) childrens.Add((i, MCTSAction.MoveLeft), null);	
 		}
-        // game.U
 	}
 	
 	// Current action, only one.
@@ -88,11 +100,10 @@ public class MCTSNode
 
 	public MCTSNode ExpandAction()
 	{
+		Assert.IsTrue(IsLeaf(), "IsLeaf()");
 		var action = childrens.Where(c => c.Value == null).GetRandom().Key;
-
-		int playerPlaying = UnityEngine.Random.Range(0, PlayerCount);
 		
-		return childrens[action] = new MCTSNode(new Game(game), players, currentPlayer, action.Item1, action.Item2,this, turnCount + 1);
+		return childrens[action] = new MCTSNode(new Game(game), (Vector2?[])players.Clone(), currentPlayer, action.Item1, action.Item2,this, turnCount + 1);
 	}
 
 	public void SimulateAction()
@@ -102,51 +113,55 @@ public class MCTSNode
 		int currentPlayerTurn = playerTurn;
 		float dt = MCTSHelper.SimulationDeltaTime;
 		PlayerUpdateResult?[] results = new PlayerUpdateResult?[PlayerCount];
-		for (int i = 0; i < MCTSHelper.NumberOfSimulations; i++)
+
+		bool gameEnd = false;
+		while(!gameEnd)
+		// for (int frameIndex = 0; frameIndex < MCTSHelper.NumberOfFramePerSimulation; frameIndex++)
 		{
-			for (int frameIndex = 0; frameIndex < MCTSHelper.NumberOfFramePerSimulation; frameIndex++)
+			for (int player = 0; player < PlayerCount; player++)
 			{
-				for (int player = 0; player < PlayerCount; player++)
-				{
-					
-					if(!players[player].HasValue)
-					{
-						results[player] = null;
-						continue;
-					}
-
-					var action = copyGame.GenerateAllPossibleRandomPlayerAction(players[player].Value);
-					results[player] = action.ChooseRandomAction().GetPlayerUpdateResult(players[player].Value, dt);
-					players[player] = results[player].Value.Position;
-				}
-				copyGame.UpdatePlayers(results);
-				copyGame.Update(dt);
-
-				Assert.IsTrue(players[currentPlayer].HasValue);
-
-				bool shouldEndGame = false;
-				for (int j = 0; j < PlayerCount; j++)
-				{
-					if (!players[j].HasValue) continue;
-					bool playerIsDead = copyGame.PositionHasExploded(players[currentPlayer].Value);
-					if (playerIsDead)
-					{
-						if (currentPlayer == j)
-						{
-							LooseScore += 1.0f / turnCount;
-							shouldEndGame = true;
-						}
-						else
-						{
-							WinScore += 1.0f / turnCount;
-						}
-
-						players[j] = null;
-						shouldEndGame &= players.Count(p => !p.HasValue) > PlayerCount - 1;
-					}
-				}
 				
+				if(!players[player].HasValue)
+				{
+					results[player] = null;
+					continue;
+				}
+
+				var action = copyGame.GenerateAllPossibleRandomPlayerAction(players[player].Value);
+				results[player] = action.ChooseRandomAction().GetPlayerUpdateResult(players[player].Value, dt);
+				players[player] = results[player].Value.Position;
 			}
+			copyGame.UpdatePlayers(results);
+			copyGame.Update(dt);
+
+			Assert.IsTrue(players[currentPlayer].HasValue);
+
+			for (int j = 0; j < PlayerCount; j++)
+			{
+				if (!players[j].HasValue) continue;
+				bool playerIsDead = copyGame.PositionHasExploded(players[j].Value);
+				if (playerIsDead)
+				{
+					if (currentPlayer == j)
+					{
+						LooseScore += 1.0f / turnCount;
+						gameEnd = true;
+					}
+					else
+					{
+						// WinScore += 0.1f / turnCount;
+					}
+
+					players[j] = null;
+					gameEnd |= players.Count(p => !p.HasValue) >= PlayerCount - 1;
+				}
+			}
+			
+		}
+
+		if (players[playerTurn].HasValue)
+		{
+			WinScore += 2.0f / turnCount;
 		}
 	}
 
@@ -220,7 +235,15 @@ public class MCTSNode
 
 	public bool IsLeaf()
 	{
-		return childrens.Any(keyPair => keyPair.Value == null);
+		foreach (var child in childrens)
+		{
+			if (child.Value == null)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public MCTSAction GetBestAction()
