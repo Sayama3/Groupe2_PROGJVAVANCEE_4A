@@ -30,13 +30,10 @@ public class MCTSPlayerController : APlayerController
             return Explore(ref nodes);
         }
     }
-    
-    
     private MCTSNode Explore(ref List<MCTSNode> nodes)
     {
         return nodes.GetRandom();
     }
-
     private MCTSNode Exploit(ref List<MCTSNode> nodes)
     {
         int best = 0;
@@ -51,7 +48,6 @@ public class MCTSPlayerController : APlayerController
 
         return nodes[best];
     }
-    
     public override PlayerUpdateResult Update(float dt, Game copyGame)
     {
         int playerIndex = PlayerManager.Instance.players.IndexOf(this);

@@ -144,6 +144,7 @@ public class MCTSNode
 	public void Backpropagate()
 	{
 		if (parent == null) return;
+		ExplorationCount += 1;
 		parent.RecurseAddScore(WinScore, LooseScore);
 	}
 
@@ -151,7 +152,7 @@ public class MCTSNode
 	{
 		this.WinScore += win;
 		this.LooseScore += loose;
-		this.ExplorationCount++;
+		ExplorationCount += 1;
 		this.Score = GetScore();
 		if(parent != null) parent.RecurseAddScore(win, loose);
 	}
