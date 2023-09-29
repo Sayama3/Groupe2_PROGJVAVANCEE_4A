@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum HumanPlayerIndex : int
@@ -13,8 +14,8 @@ public class HumanPlayerController : APlayerController
 	private HumanPlayerIndex index;
 	public HumanPlayerController(GameObject prefab, HumanPlayerIndex playerIndex)
 	{
-		this.PrefabSource = prefab;
-		this.index = playerIndex;
+		PrefabSource = prefab;
+		index = playerIndex;
 	}
     
     public override PlayerUpdateResult Update(float dt, Game copyGame)
@@ -32,18 +33,22 @@ public class HumanPlayerController : APlayerController
             if (verticalInput > 0 && possibleActions[1])
             {
                 position.y += speed * dt;
+                Forward = Vector3.forward;
             }
             else if (horizontalInput > 0 && possibleActions[2])
             {
                 position.x += speed * dt;
+                Forward = Vector3.right;
             }
             else if (verticalInput < 0 && possibleActions[3])
             {
                 position.y -= speed * dt;
+                Forward = -Vector3.forward;
             }
             else if (horizontalInput < 0 && possibleActions[4])
             {
                 position.x -= speed * dt;
+                Forward = -Vector3.right;
             }
         }
 

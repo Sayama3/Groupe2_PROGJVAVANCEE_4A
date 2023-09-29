@@ -94,12 +94,11 @@ public class GameRenderer : MonoBehaviour
 		{
 			var player = instance.players[i];
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
-			Quaternion rotation = player.Rotation;
 			GameObject src = player.PrefabSource;
 			players[i] = Instantiate(src, boardParent, false);
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.localRotation = rotation;
+			playerTransform.forward = player.Forward;
 		}
 	}
 
@@ -165,11 +164,10 @@ public class GameRenderer : MonoBehaviour
 			}
 			var player = gamePlayers[i];
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
-			Quaternion rotation = player.Rotation;
 
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.localRotation = rotation;
+			playerTransform.forward = player.Forward;
 		}
 	}
 
