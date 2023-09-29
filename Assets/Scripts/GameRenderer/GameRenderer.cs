@@ -16,6 +16,7 @@ public class GameRenderer : MonoBehaviour
 	private GameBoard currentGameBoard;
 	private CellObject[] renderBoard;
 	private GameObject[] players;
+	private Animator[] animators;
 	private bool needToInit = true;
 	private void Start()
 	{
@@ -89,12 +90,14 @@ public class GameRenderer : MonoBehaviour
 	{
 		var instance = PlayerManager.Instance;
 		players = new GameObject[instance.players.Count];
+		animators = new Animator[players.Length];
 		for (int i = 0; i < instance.players.Count; i++)
 		{
 			var player = instance.players[i];
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
 			GameObject src = player.PrefabSource;
 			players[i] = Instantiate(src, boardParent, false);
+			animators[i] = players[i].GetComponentInChildren<Animator>();
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
 		}
@@ -170,7 +173,12 @@ public class GameRenderer : MonoBehaviour
 
 			if (!(player.LastPosition == player.Position))
 			{
+				animators[i].SetBool("Walking", true);
 				playerTransform.forward = position - lastPosition;
+			}
+			else
+			{
+				animators[i].SetBool("Walking", false);
 			}
 		}
 	}
