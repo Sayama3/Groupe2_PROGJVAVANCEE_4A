@@ -13,11 +13,50 @@ MonoBehaviour:
   m_Name: GameParameters
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 0301120000005f00640065006600610075006c00740050006100720061006d00650074006500720073002f00000000011f000000470061006d00650050006100720061006d00650074006500720073002c00200041007300730065006d0062006c0079002d00430053006800610072007000170105000000570069006400740068000f0000001701060000004800650069006700680074000f0000001f0105000000530070006500650064000000404017010a00000042006f006d006200520061006400690075007300030000001f010900000042006f006d006200540069006d00650072000000c03f1f011200000042006f006d0062004500780070006c006f00730069006f006e00540069006d00650072000000c03f17010d0000004e0075006d006200650072004f00660054006500730074007300320000001f0113000000530069006d0075006c006100740069006f006e00440065006c0074006100540069006d006500cdcc4c3e1f01130000004500780070006c006f00720065004d00610078005400680072006500730068006f006c0064000000003f1f01130000004500780070006c006f00720065004d0069006e005400680072006500730068006f006c006400000000001701130000004e0075006d006200650072004f006600530069006d0075006c006100740069006f006e0073000500000005
+    SerializedFormat: 2
+    SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: _defaultParameters
+      Entry: 7
+      Data: GameParameters, Assembly-CSharp
+    - Name: Width
+      Entry: 3
+      Data: 15
+    - Name: Height
+      Entry: 3
+      Data: 15
+    - Name: Speed
+      Entry: 4
+      Data: 3
+    - Name: BombRadius
+      Entry: 3
+      Data: 3
+    - Name: BombTimer
+      Entry: 4
+      Data: 1.5
+    - Name: BombExplosionTimer
+      Entry: 4
+      Data: 1.5
+    - Name: NumberOfTests
+      Entry: 3
+      Data: 50
+    - Name: SimulationDeltaTime
+      Entry: 4
+      Data: 0.2
+    - Name: ExploreMaxThreshold
+      Entry: 4
+      Data: 0.5
+    - Name: ExploreMinThreshold
+      Entry: 4
+      Data: 0
+    - Name: NumberOfSimulations
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
