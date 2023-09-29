@@ -7,12 +7,18 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum PlayerType { None, Human, Random, MCTS }
+public enum PlayerType
+{
+    None,
+    Human,
+    Random,
+    MCTS
+}
 
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown[] playerDropdowns;
-    
+
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -21,7 +27,7 @@ public class MainMenuManager : MonoBehaviour
     private int currentResolutionIndex;
 
     [SerializeField] private Toggle fullScreenToggle;
-    private bool isFullscreen;
+    private FullScreenMode fullscreen;
 
     [SerializeField] private RectTransform optionsMenu;
     [SerializeField] private RectTransform optionsMenuDeployed;
@@ -31,36 +37,32 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private float optionsDeploySpeed = 5f;
 
     private Coroutine lerpCorout = null;
-    
+
     private void Start()
     {
-        optionsMenuRetractedPos = optionsMenu.position;
-        SetupResolution();
         ReadPrefs();
+        SetupResolution();
+        
+        optionsMenuRetractedPos = optionsMenu.position;
     }
 
     private void SetupResolution()
     {
         resolutionDropdown.ClearOptions();
-        resolutions = Screen.resolutions;
-        currentRefreshRate = Screen.currentResolution.refreshRateRatio.value;
 
         List<string> optionLabels = new List<string>();
         for (int i = 0; i < resolutions.Length; i++)
         {
-            optionLabels.Add(resolutions[i].width + " x " + 
+            optionLabels.Add(resolutions[i].width + " x " +
                              resolutions[i].height + " " +
                              (int)resolutions[i].refreshRateRatio.value + "Hz");
-
-            if (resolutions[i].width == Screen.currentResolution.width &&
-                resolutions[i].height == Screen.currentResolution.height &&
-                (int)resolutions[i].refreshRateRatio.value == (int)Screen.currentResolution.refreshRateRatio.value)
-            {
-                currentResolutionIndex = i;
-            }
         }
 
         resolutionDropdown.AddOptions(optionLabels);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+        
+        SetResolution();
     }
 
     public void StartGame()
@@ -78,8 +80,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToggleOptions()
     {
-        if(lerpCorout != null) StopCoroutine(lerpCorout);
-        
+        if (lerpCorout != null) StopCoroutine(lerpCorout);
+
         if (isOptionsMenuDeployed)
         {
             isOptionsMenuDeployed = false;
@@ -125,27 +127,60 @@ public class MainMenuManager : MonoBehaviour
         audioMixer.SetFloat("Volume", volume);
     }
 
-    public void SetFullscreen(bool isFullscreen)
+    public void SetResolution()
     {
-        Screen.fullScreen = isFullscreen;
+        currentResolutionIndex = resolutionDropdown.value;
+        PlayerPrefs.SetInt("Resolution", currentResolutionIndex);
+        
+        UpdateDisplay();
+    }
+
+    public void SetFullscreen()
+    {
+        if (fullScreenToggle.isOn)
+        {
+            fullscreen = FullScreenMode.ExclusiveFullScreen;
+            PlayerPrefs.SetInt("Fullscreen", 1);
+        }
+        else
+        {
+            fullscreen = FullScreenMode.Windowed;
+            PlayerPrefs.SetInt("Fullscreen", 0);
+        }
+        
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
+    {
+        Resolution res = resolutions[currentResolutionIndex];
+        Screen.SetResolution(res.width, res.height, fullscreen, res.refreshRateRatio);
     }
 
     private void ReadPrefs()
     {
+        resolutions = Screen.resolutions;
+        currentRefreshRate = Screen.currentResolution.refreshRateRatio.value;
+
         if (PlayerPrefs.HasKey("Fullscreen"))
         {
-            isFullscreen = (PlayerPrefs.GetInt("Fullscreen") >= 1);
+            if (PlayerPrefs.GetInt("Fullscreen") >= 1)
+            {
+                fullscreen = FullScreenMode.ExclusiveFullScreen;
+            }
+            else
+            {
+                fullscreen = FullScreenMode.Windowed;
+            }
         }
-        else isFullscreen = Screen.fullScreen;
-
-        if (PlayerPrefs.HasKey("Resolution"))
+        else
         {
-            resolutionDropdown.value = PlayerPrefs.GetInt("Resolution");
-
-            Resolution readResolution = resolutions[resolutionDropdown.value];
-            Screen.SetResolution(readResolution.width, readResolution.height, isFullscreen);
+            PlayerPrefs.SetInt("Fullscreen", 1);
+            fullscreen = Screen.fullScreenMode;
         }
-        else resolutionDropdown.value = currentResolutionIndex;
+
+        if (PlayerPrefs.HasKey("Resolution")) currentResolutionIndex = PlayerPrefs.GetInt("Resolution");
+        else currentResolutionIndex = Screen.resolutions.Length;
     }
 
     [Button]
