@@ -11,7 +11,7 @@ public enum PlayerType { None, Human, Random, MCTS }
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Dropdown[] playerDropdowns;
+    [SerializeField] private PlayerPreview[] playerPreviews;
 
     [SerializeField] private AudioMixer audioMixer;
 
@@ -62,14 +62,6 @@ public class MainMenuManager : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene("SceneIannis");
-    }
-
-    public void UpdatePlayers()
-    {
-        for (int i = 0; i < playerDropdowns.Length; i++)
-        {
-            MenuToGame.Instance.playerTypes[i] = (PlayerType)playerDropdowns[i].value;
-        }
     }
 
     public void ToggleOptions()
