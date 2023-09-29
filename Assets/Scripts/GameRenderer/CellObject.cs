@@ -13,10 +13,10 @@ public class CellObject : MonoBehaviour
     [SerializeField, ReadOnly] private CellStates cell;
     [SerializeField, ReadOnly] private bool exploded;
 
-    private void Start()
-    {
-        DisableAll();
-    }
+    // private void Start()
+    // {
+    //     DisableAll();
+    // }
 
     public void SetCell(CellStates cellState, bool exploded = false)
     {

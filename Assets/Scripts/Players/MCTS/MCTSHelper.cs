@@ -7,8 +7,9 @@ public static class MCTSHelper
 	public static int NumberOfTests => GameManager.Instance.GetCurrentGameParams().NumberOfTests;
 	public static float PlayerSpeed => GameManager.Instance.GetCurrentGameParams().Speed;
 	public static float SimulationDeltaTime => GameManager.Instance.GetCurrentGameParams().SimulationDeltaTime;
-	public static float ExploreThreshold => GameManager.Instance.GetCurrentGameParams().ExploreThreshold;
-	public static int NumberOfFramePerSimulation => GameManager.Instance.GetCurrentGameParams().NumberOfFramePerSimulation;
+	public static float ExploreMaxThreshold => GameManager.Instance.GetCurrentGameParams().ExploreMaxThreshold;
+	public static float ExploreMinThreshold => GameManager.Instance.GetCurrentGameParams().ExploreMinThreshold;
+	public static int NumberOfSimulations => GameManager.Instance.GetCurrentGameParams().NumberOfSimulations;
 	public static MCTSAction GenerateAllPossibleRandomPlayerAction(this Game game, Vector2 position)
 	{
 		MCTSAction actions = MCTSAction.None;

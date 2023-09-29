@@ -265,4 +265,9 @@ public class Game
 			}
 		}
 	}
+
+	public void SetCell(float valueX, float valueY, CellStates none)
+	{
+		_gameBoard.SetCell(Round(valueX), Round(valueY), none);
+	}
 }

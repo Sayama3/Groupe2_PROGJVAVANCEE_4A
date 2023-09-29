@@ -77,26 +77,7 @@ public class MCTSNode
 	// Win / Loose
 	public float WinScore {get; private set;}
 	public float LooseScore {get; private set;}
-
-	public MCTSNode SelectAction()
-	{
-		if (childrens.Count == 0)
-		{
-			return Explore();
-		}
-		else
-		{
-			float value = UnityEngine.Random.value;
-			if (value > MCTSHelper.ExploreThreshold)
-			{
-				return Exploit();
-			}
-			else
-			{
-				return Explore();
-			}
-		}
-	}
+	public int ExplorationCount { get; private set; }
 
 	public MCTSNode ExpandAction()
 	{
@@ -116,7 +97,6 @@ public class MCTSNode
 
 		bool gameEnd = false;
 		while(!gameEnd)
-		// for (int frameIndex = 0; frameIndex < MCTSHelper.NumberOfFramePerSimulation; frameIndex++)
 		{
 			for (int player = 0; player < PlayerCount; player++)
 			{
@@ -142,16 +122,6 @@ public class MCTSNode
 				bool playerIsDead = copyGame.PositionHasExploded(players[j].Value);
 				if (playerIsDead)
 				{
-					if (currentPlayer == j)
-					{
-						LooseScore += 1.0f / turnCount;
-						gameEnd = true;
-					}
-					else
-					{
-						// WinScore += 0.1f / turnCount;
-					}
-
 					players[j] = null;
 					gameEnd |= players.Count(p => !p.HasValue) >= PlayerCount - 1;
 				}
@@ -159,9 +129,13 @@ public class MCTSNode
 			
 		}
 
-		if (players[playerTurn].HasValue)
+		if (!players[currentPlayer].HasValue)
 		{
-			WinScore += 2.0f / turnCount;
+			LooseScore ++;
+		}
+		else
+		{
+			WinScore ++;
 		}
 	}
 
@@ -175,8 +149,12 @@ public class MCTSNode
 	{
 		this.WinScore += win;
 		this.LooseScore += loose;
+		this.ExplorationCount++;
+		this.Score = GetScore();
 		if(parent != null) parent.RecurseAddScore(win, loose);
 	}
+
+	public float Score { get; private set; }
 
 	private MCTSNode Explore()
 	{
@@ -207,15 +185,9 @@ public class MCTSNode
 
 	public float GetScore()
 	{
-		if (LooseScore == 0)
-		{
-			return WinScore;
-		}
-		else if (WinScore == 0)
-		{
-			return -LooseScore;
-		}
-		else return (float)WinScore / (float)LooseScore;
+		if (ExplorationCount == 0) return float.NegativeInfinity;
+
+		return (WinScore-LooseScore) / (float) ExplorationCount;
 	}
 
 	private bool AnyNewPlayerIsDead()

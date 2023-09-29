@@ -24,7 +24,8 @@ public class ScriptableGameParameters : SerializedScriptableObject, IGameParamet
 	public int NumberOfTests => _defaultParameters.NumberOfTests;
 	public float SimulationDeltaTime => _defaultParameters.SimulationDeltaTime;
 
-	public float ExploreThreshold => _defaultParameters.ExploreThreshold;
+	public float ExploreMaxThreshold => _defaultParameters.ExploreMaxThreshold;
+	public float ExploreMinThreshold => _defaultParameters.ExploreMinThreshold;
 
-	public int NumberOfFramePerSimulation => _defaultParameters.NumberOfFramePerSimulation;
+	public int NumberOfSimulations => _defaultParameters.NumberOfSimulations;
 }

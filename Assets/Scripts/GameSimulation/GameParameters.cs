@@ -15,8 +15,9 @@ public struct GameParameters: IGameParameters
 		this.BombExplosionTimer = 1.5f;
 		this.NumberOfTests = 4;
 		this.SimulationDeltaTime = 0.1f;
-		this.ExploreThreshold = 0.8f;
-		this.NumberOfFramePerSimulation = 50;
+		this.ExploreMinThreshold = 0.05f;
+		this.ExploreMaxThreshold = 0.5f;
+		this.NumberOfSimulations = 50;
 	}
 	[OdinSerialize, ShowInInspector, MinValue(1), HorizontalGroup("GameSize")]
 	public int Width {get; set;}
@@ -43,8 +44,11 @@ public struct GameParameters: IGameParameters
 	public float SimulationDeltaTime { get; set; }
 
     [OdinSerialize, ShowInInspector, PropertyRange(0,1)]
-	public float ExploreThreshold { get; set; }
+	public float ExploreMaxThreshold { get; set; }
+
+    [OdinSerialize, ShowInInspector, PropertyRange(0,1)]
+	public float ExploreMinThreshold { get; set; }
 
     [OdinSerialize, ShowInInspector]
-	public int NumberOfFramePerSimulation { get; set; }
+	public int NumberOfSimulations { get; set; }
 }

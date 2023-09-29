@@ -15,11 +15,13 @@ public class MCTSPlayerController : APlayerController
         this.PrefabSource = prefab;
     }
 
+    private float researchValue;
+
     private MCTSNode Select(ref List<MCTSNode> nodes)
     {
         Assert.IsTrue(nodes.TrueForAll(l => l.IsLeaf()), "leafs.TrueForAll(l => l.IsLeaf())");
         float value = UnityEngine.Random.value;
-        if (value > MCTSHelper.ExploreThreshold)
+        if (value > ((MCTSHelper.ExploreMaxThreshold-MCTSHelper.ExploreMinThreshold) * researchValue) + MCTSHelper.ExploreMinThreshold)
         {
             return Exploit(ref nodes);
         }
@@ -72,15 +74,22 @@ public class MCTSPlayerController : APlayerController
         
         for (int i = 0; i < MCTSHelper.NumberOfTests; i++)
         {
+            researchValue = Mathf.Max((MCTSHelper.NumberOfTests - i) / (float)MCTSHelper.NumberOfTests, 0);
             var selected = Select(ref leafs);
             Assert.IsTrue(selected.IsLeaf());
             var newNode = selected.ExpandAction();
-            newNode.SimulateAction();
+            for (int j = 0; j < MCTSHelper.NumberOfSimulations; j++)
+            {
+                newNode.SimulateAction();
+            }
             newNode.Backpropagate();
             CheckNodes(ref leafs, ref newNode);
         }
 
-        return rootNode.GetBestAction().GetPlayerUpdateResult(Position, dt);
+        var ac = rootNode.GetBestAction().GetPlayerUpdateResult(Position, dt);
+        Position = Vector2.MoveTowards(Position, ac.Position, GameManager.Instance.GetCurrentGameParams().Speed * dt);
+        ac.Position = Position;
+        return ac;
     }
 
     private void CheckNodes(ref List<MCTSNode> leafs, ref MCTSNode newNode)
@@ -95,6 +104,7 @@ public class MCTSPlayerController : APlayerController
         {
             leafs.Remove(parent);
         }
+
         Assert.IsTrue(leafs.TrueForAll(l => l.IsLeaf()), "leafs.TrueForAll(l => l.IsLeaf())");
     }
 }
