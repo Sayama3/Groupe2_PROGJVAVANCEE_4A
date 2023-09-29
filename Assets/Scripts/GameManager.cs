@@ -33,7 +33,7 @@ public class GameManager : SerializedMonoBehaviour
             return;
         }
 
-        DontDestroyOnLoad(this);
+        // DontDestroyOnLoad(this);
         instance = this;
     }
 

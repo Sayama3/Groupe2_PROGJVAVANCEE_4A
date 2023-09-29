@@ -20,7 +20,7 @@ public class EndGame : MonoBehaviour
 
     private void PlayerWin(IPlayerController arg1, int arg2)
     {
-        endGameText = $"Player {arg2} won !";
+        endGameText = $"Player {arg2+1} won !";
     }
 
     private void GameTie()

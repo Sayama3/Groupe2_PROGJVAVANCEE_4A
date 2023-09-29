@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuToGame : MonoBehaviour
 {
@@ -35,4 +37,20 @@ public class MenuToGame : MonoBehaviour
     }
 
     #endregion
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += ResetPlayers;
+    }
+
+    private void ResetPlayers(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name != "MainMenu") return;
+        for(int i = 0; i < playerTypes.Length; i++)
+        {
+            playerTypes[i] = PlayerType.None;
+        }
+    }
+
+    
 }

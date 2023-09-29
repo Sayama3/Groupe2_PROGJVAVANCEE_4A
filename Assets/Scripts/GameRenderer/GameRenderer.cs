@@ -11,15 +11,12 @@ public class GameRenderer : MonoBehaviour
 
 	[SerializeField] private Transform boardParent;
 	[SerializeField] private float height = 0;
-	[SerializeField, Required] private GameObject none;
-	[SerializeField, Required] private GameObject explodedCell;
-	[SerializeField, Required] private GameObject bomb;
-	[SerializeField, Required] private GameObject wall;
+	[SerializeField, Required] private CellObject CellObject;
 
 	private GameBoard currentGameBoard;
-	private GameObject[] renderBoard;
+	private CellObject[] renderBoard;
 	private GameObject[] players;
-
+	private bool needToInit = true;
 	private void Start()
 	{
 		GameManager.Instance.OnGameStart += StartEverything;
@@ -41,7 +38,7 @@ public class GameRenderer : MonoBehaviour
 
 	private void StartEverything()
 	{
-		DestroyPreviousBoard();
+		// DestroyPreviousBoard();
 		InitBoard();
 		InitPlayer();
 	}
@@ -53,7 +50,7 @@ public class GameRenderer : MonoBehaviour
 			for (int i = renderBoard.Length - 1; i >= 0; i--)
 			{
 				if(renderBoard[i] == null) continue;
-				Destroy(renderBoard[i]);
+				Destroy(renderBoard[i].gameObject);
 				renderBoard[i] = null;
 			}
 		}
@@ -63,40 +60,34 @@ public class GameRenderer : MonoBehaviour
 			for (int i = players.Length - 1; i >= 0; i--)
 			{
 				if(players[i] == null) continue;
-				Destroy(players[i]);
+				Destroy(players[i].gameObject);
 				players[i] = null;
 			}
 		}
 	}
 
-
 	private void InitBoard()
 	{
-		//TODO: Destroy Existing.
 		currentGameBoard = game.GetCopyGameBoard();
 		var w = currentGameBoard.Width;
 		var h = currentGameBoard.Height;
 		boardParent.position = new Vector3(-((float)w)*0.5f, height, -((float)h)*0.5f);
-		renderBoard = new GameObject[currentGameBoard.Count];
+		renderBoard = new CellObject[currentGameBoard.Count];
 		for (int x = 0; x < w; x++)
 		{
 			for (int y = 0; y < h; y++)
 			{
-				
 				Vector3 position = new Vector3(x, 0, y);
 				var cell = currentGameBoard.GetCell(x, y);
-				var srcObj = GetAssociatedGameObject(cell);
-				var instance = Instantiate(srcObj, boardParent, false);
+				var instance = Instantiate(CellObject, boardParent, false);
 				renderBoard[x + y * w] = instance;
 				instance.transform.localPosition = position;
-
 			}
 		}
 	}
 
 	private void InitPlayer()
 	{
-		//TODO: Destroy Existing.
 		var instance = PlayerManager.Instance;
 		players = new GameObject[instance.players.Count];
 		for (int i = 0; i < instance.players.Count; i++)
@@ -116,6 +107,15 @@ public class GameRenderer : MonoBehaviour
 	{
 		if(GameManager.GameIsOn())
 		{
+			if (needToInit)
+			{
+				for (int i = 0; i < renderBoard.Length; i++)
+				{
+					renderBoard[i].SetCell(currentGameBoard.GetCell(i));
+				}
+
+				needToInit = false;
+			}
 			UpdateBoard();
 			UpdatePlayers();
 		}
@@ -136,35 +136,12 @@ public class GameRenderer : MonoBehaviour
 				CellStates currentCell = currentGameBoard.GetCell(index);
 				if (currentCell != cell)
 				{
-					Destroy(renderBoard[index]);
-					Vector3 position = new Vector3(x, 0, y);
-					var srcObj = GetAssociatedGameObject(cell);
-					var instance = Instantiate(srcObj, boardParent, false);
-					renderBoard[index] = instance;
-					instance.transform.localPosition = position;
-					currentGameBoard.SetCell(index, cell);
+					renderBoard[index].SetCell(cell);
 				}
 
 				if (cell == CellStates.None)
 				{
-					bool hasExploded = board.PositionHasExploded(x, y);
-					var instance = renderBoard[index];
-					if(instance.CompareTag("NoneCell") && hasExploded)
-					{
-						Destroy(renderBoard[index]);
-						Vector3 position = new Vector3(x, 0, y);
-						var newInstance = Instantiate(explodedCell, boardParent, false);
-						renderBoard[index] = newInstance;
-						newInstance.transform.localPosition = position;
-					}
-					else if(instance.CompareTag("ExplodedCell") && !hasExploded)
-					{
-						Destroy(renderBoard[index]);
-						Vector3 position = new Vector3(x, 0, y);
-						var newInstance = Instantiate(none, boardParent, false);
-						renderBoard[index] = newInstance;
-						newInstance.transform.localPosition = position;
-					}
+					renderBoard[index].SetCell(cell, board.PositionHasExploded(x, y));
 				}
 			}
 		}
@@ -181,7 +158,7 @@ public class GameRenderer : MonoBehaviour
 			{
 				if(players[i] != null)
 				{
-					Destroy(players[i]);
+					players[i].SetActive(false);
 					players[i] = null;
 				}
 				continue;
@@ -196,14 +173,4 @@ public class GameRenderer : MonoBehaviour
 		}
 	}
 
-	private GameObject GetAssociatedGameObject(CellStates cell)
-	{
-		return cell switch
-		{
-			CellStates.None => none,
-			CellStates.Bomb => bomb,
-			CellStates.Wall => wall,
-			_ => throw new ArgumentException($"The argument {cell} is not valid for the {nameof(GetAssociatedGameObject)} function."),
-		};
-	}
 }

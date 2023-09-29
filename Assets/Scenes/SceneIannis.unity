@@ -25,8 +25,8 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubtractiveShadowColor: {r: 0.4433962, g: 0.24052154, b: 0.40136984, a: 1}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,7 +278,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.23673533, g: 0.15726237, b: 0.3584906, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -365,10 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardParent: {fileID: 2026760242}
   height: 0
-  none: {fileID: 8182833810878272927, guid: 64bb5a0be108af6409ffa627861cc66f, type: 3}
-  explodedCell: {fileID: 8182833810878272927, guid: f9da810732c35d4408fc115ae7059544, type: 3}
-  bomb: {fileID: 1245422946858787843, guid: 09cc1e1630e89bf42afd5d41830fa1c1, type: 3}
-  wall: {fileID: 3156100060051615229, guid: 455ff83448013f848a8c171818b7abd4, type: 3}
+  CellObject: {fileID: 7951974422167539095, guid: dbf24d6be812de44aac97584cb9d795c, type: 3}
 --- !u!4 &745794275
 Transform:
   m_ObjectHideFlags: 0
