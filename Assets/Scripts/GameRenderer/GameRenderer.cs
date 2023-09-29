@@ -65,7 +65,7 @@ public class GameRenderer : MonoBehaviour
 			}
 		}
 	}
-
+	
 	private void InitBoard()
 	{
 		currentGameBoard = game.GetCopyGameBoard();
@@ -78,7 +78,6 @@ public class GameRenderer : MonoBehaviour
 			for (int y = 0; y < h; y++)
 			{
 				Vector3 position = new Vector3(x, 0, y);
-				var cell = currentGameBoard.GetCell(x, y);
 				var instance = Instantiate(CellObject, boardParent, false);
 				renderBoard[x + y * w] = instance;
 				instance.transform.localPosition = position;
@@ -94,12 +93,10 @@ public class GameRenderer : MonoBehaviour
 		{
 			var player = instance.players[i];
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
-			Quaternion rotation = player.Rotation;
 			GameObject src = player.PrefabSource;
 			players[i] = Instantiate(src, boardParent, false);
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.localRotation = rotation;
 		}
 	}
 
@@ -149,7 +146,7 @@ public class GameRenderer : MonoBehaviour
 
 	private void UpdatePlayers()
 	{
-		//Update Player positino and rotation.
+		//Update Player position and rotation.
 		var gamePlayers = GameManager.Instance.GetPlayers();
 		Assert.AreEqual(gamePlayers.Length, players.Length);
 		for (int i = 0; i < players.Length; i++)
@@ -164,12 +161,17 @@ public class GameRenderer : MonoBehaviour
 				continue;
 			}
 			var player = gamePlayers[i];
+			
+			Vector3 lastPosition = new Vector3(player.LastPosition.x, 0, player.LastPosition.y);
 			Vector3 position = new Vector3(player.Position.x, 0, player.Position.y);
-			Quaternion rotation = player.Rotation;
 
 			var playerTransform = players[i].transform;
 			playerTransform.localPosition = position;
-			playerTransform.localRotation = rotation;
+
+			if (!(player.LastPosition == player.Position))
+			{
+				playerTransform.forward = position - lastPosition;
+			}
 		}
 	}
 

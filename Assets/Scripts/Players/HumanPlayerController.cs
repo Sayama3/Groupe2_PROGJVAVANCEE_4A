@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum HumanPlayerIndex : int
@@ -13,8 +14,8 @@ public class HumanPlayerController : APlayerController
 	private HumanPlayerIndex index;
 	public HumanPlayerController(GameObject prefab, HumanPlayerIndex playerIndex)
 	{
-		this.PrefabSource = prefab;
-		this.index = playerIndex;
+		PrefabSource = prefab;
+		index = playerIndex;
 	}
     
     public override PlayerUpdateResult Update(float dt, Game copyGame)

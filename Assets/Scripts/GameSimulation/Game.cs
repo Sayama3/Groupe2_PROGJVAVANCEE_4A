@@ -86,23 +86,23 @@ public class Game
 		Vector2Int Down = Center + Vector2Int.down;
 		Vector2Int Left = Center + Vector2Int.left;
 
-		if(_gameBoard.GetCell(Center) == CellStates.None || _gameBoard.GetCell(Center) == CellStates.Bomb) possibleMove.Add(Center);
+		if(_gameBoard.GetCell(Center) == CellStates.None) possibleMove.Add(Center);
 
 		if(Up.x >= 0 && Up.x < _gameBoard.Width && Up.y >= 0 && Up.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Up) == CellStates.None) possibleMove.Add(Up);
+            if(_gameBoard.GetCell(Up) != CellStates.Wall) possibleMove.Add(Up);
 		}
 		if(Right.x >= 0 && Right.x < _gameBoard.Width && Right.y >= 0 && Right.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Right) == CellStates.None) possibleMove.Add(Right);
+            if(_gameBoard.GetCell(Right) != CellStates.Wall) possibleMove.Add(Right);
 		}
 		if(Down.x >= 0 && Down.x < _gameBoard.Width && Down.y >= 0 && Down.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Down) == CellStates.None) possibleMove.Add(Down);
+            if(_gameBoard.GetCell(Down) != CellStates.Wall) possibleMove.Add(Down);
 		}
 		if(Left.x >= 0 && Left.x < _gameBoard.Width && Left.y >= 0 && Left.y < _gameBoard.Height)
 		{
-            if(_gameBoard.GetCell(Left) == CellStates.None) possibleMove.Add(Left);
+            if(_gameBoard.GetCell(Left) != CellStates.Wall) possibleMove.Add(Left);
 		}
 
 		Assert.IsTrue(possibleMove.Count > 0);
@@ -118,7 +118,7 @@ public class Game
 		int y = Round(position.y);
 		Vector2Int center = new Vector2Int(x, y);
 
-		possibleMove[0] = true; // Foireux
+		possibleMove[0] = true;
 		if (_gameBoard.GetCell(center) == CellStates.None) possibleMove[5] = true;
 		
 		const float e = .1f;
